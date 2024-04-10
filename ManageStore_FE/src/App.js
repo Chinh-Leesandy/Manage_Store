@@ -10,6 +10,8 @@ import { HomeNghiPhep } from './components/tk-nghiphep/HomeNghiPhep';
 import { NghiPhep } from './components/tk-nghiphep/NghiPhep';
 import { HomeProductType } from './components/manage-producttype/HomeProductType';
 import { ProductType } from './components/manage-producttype/ProductType';
+import { HomeLuong } from './components/tk-luong/HomeLuong';
+import { Luong } from './components/tk-luong/Luong';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route  path = '/tknghiphep/:month' element = {<NghiPhep/>}/>
         <Route  path = '/productType' element = {<HomeProductType/>}/>
         <Route  path = '/productType/:id' element = {<ProductType/>}/>
+        <Route  path = '/tkluong' element = {<HomeLuong/>}/>
+        <Route  path = '/tkluong/:month' element = {<Luong/>}/>
       </Routes>
       <ToastContainer/>
       </div>
