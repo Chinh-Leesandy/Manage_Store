@@ -31,6 +31,7 @@ export const HomeNghiPhep = () => {
                         placeholder="Nhập tháng muốn thống kê (vd : 4)"
                         value={months}
                         onChange={(e) => setMonths(e.target.value)}
+                        max="12" min="1"
                     />
                 </div>
                 <div className="col-auto">

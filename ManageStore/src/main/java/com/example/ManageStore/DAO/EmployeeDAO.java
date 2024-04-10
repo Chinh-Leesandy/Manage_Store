@@ -19,6 +19,8 @@ public class EmployeeDAO extends DAO {
 	private static final String INSERT_EMPLOYEE = "INSERT INTO nhanvien (hoten, sdt, email, diachi, chucvu, username, password,ngaybatdaulv) VALUES (?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_EMPLOYEE = "UPDATE nhanvien SET hoten = ?, sdt = ?, email = ?, diachi = ?, chucvu = ?, username = ?, password = ?, ngaybatdaulv= ? WHERE id = ?";
 	private static final String DELETE_EMPLOYEE ="DELETE FROM nhanvien WHERE id = ?";
+	private static final String DELETE_EMPLOYEE_DEPENDENCIES = "DELETE FROM nghiphep WHERE idnhanvien = ?";
+	private static final String DELETE_EMPLOYEE_DEPENDENCIES2 = "DELETE FROM chamcong WHERE idnhanvien = ?";
 	
 	public ResponseEntity<?> selectAllEmployee() {
 		List<Employee> employees = new ArrayList<>();
@@ -109,15 +111,38 @@ public class EmployeeDAO extends DAO {
 	}
 	
 	public ResponseEntity<?> deleteEmployee(int id) {
-		try (Connection connection = getConnection()){
-			PreparedStatement ps = connection.prepareStatement(DELETE_EMPLOYEE);
-			ps.setInt(1, id);
-			ps.executeUpdate();
-			return ResponseEntity.ok("Delete Employee");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.internalServerError().build();
+		try (Connection connection = getConnection()) {
+	        connection.setAutoCommit(false);
+	        try (PreparedStatement ps = connection.prepareStatement(DELETE_EMPLOYEE_DEPENDENCIES)) {
+	            ps.setInt(1, id);
+	            ps.executeUpdate();
+	        } catch (Exception e) {
+	            connection.rollback(); 
+	            e.printStackTrace();
+	            return ResponseEntity.internalServerError().body("Failed to delete employee dependencies");
+	        }
+	        try (PreparedStatement ps = connection.prepareStatement(DELETE_EMPLOYEE_DEPENDENCIES2)) {
+	            ps.setInt(1, id);
+	            ps.executeUpdate();
+	        } catch (Exception e) {
+	            connection.rollback(); 
+	            e.printStackTrace();
+	            return ResponseEntity.internalServerError().body("Failed to delete employee dependencies2");
+	        }
+	        try (PreparedStatement ps = connection.prepareStatement(DELETE_EMPLOYEE)) {
+	            ps.setInt(1, id);
+	            ps.executeUpdate();
+	        } catch (Exception e) {
+	            connection.rollback(); 
+	            e.printStackTrace();
+	            return ResponseEntity.internalServerError().body("Failed to delete employee");
+	        }
+	        connection.commit(); 
+	        return ResponseEntity.ok("Employee deleted successfully");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return ResponseEntity.internalServerError().build();
 	}
 		
 }

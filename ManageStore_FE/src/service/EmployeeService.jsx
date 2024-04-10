@@ -41,7 +41,7 @@ const EmployeeService = {
 
   deleteEmployee: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}/deleteEmployee/${id}`);
+      const response = await axios.delete(`${API_URL}/deleteEmploye/${id}`);
       return response.data;
     } catch (error) {
       throw Error('Error while deleting employee');

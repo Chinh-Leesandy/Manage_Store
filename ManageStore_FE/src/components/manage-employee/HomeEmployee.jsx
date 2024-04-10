@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EmployeeService from '../../service/EmployeeService';
 import { useNavigate } from "react-router-dom";
+import { errorToast, successToast } from '../../util/toastily';
 
 export const HomeEmployee = () => {
     const [employees, setEmployees] = useState([]);
@@ -40,8 +41,13 @@ export const HomeEmployee = () => {
         if (window.confirm(`Bạn có chắc chắn muốn xóa nhân viên ${e.hoten} không?`)) {
             try {
                await EmployeeService.deleteEmployee(e.id);
+               successToast("Bạn đã xóa thành công nhân viên")
+               setTimeout(() => {
+                   navigate('/employee'); 
+               }, 1000);
             } catch (error) {
                 console.error('Error delete employee:', error.message);
+                errorToast("Bạn xóa không thành công nhân viên")
             }
         }
       };

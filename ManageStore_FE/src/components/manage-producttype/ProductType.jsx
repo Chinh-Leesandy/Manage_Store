@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import ProductTypeService from '../../service/ProductTypeService';
+import { errorToast, successToast } from '../../util/toastily';
 export const ProductType = () => {
     const [productType, setProductType] = useState({});
     const params = useParams();
@@ -21,12 +22,31 @@ export const ProductType = () => {
         try {
           if (id < 0) {
             await ProductTypeService.addProductType(productType);
+            successToast("Bạn đã thêm thành công loại mặt hàng");
           } else {
             await ProductTypeService.updateProductType(productType);
+            successToast("Bạn đã cập nhập thành công loại mặt hàng");
           }
-          navigate('/productType'); 
+          setTimeout(() => {  
+            navigate('/productType'); 
+          }, 1000);
         } catch (error) {
           console.error('Error:', error.message);
+          if(id < 0) {
+            errorToast("Bạn đã thêm không thành công loại mặt hàng");
+          }
+          else {
+            errorToast("Bạn đã cập nhập không thành công loại mặt hàng");
+          }
+        }
+      }
+      const handleBack = () => {
+        if(window.confirm(`Bạn có chắc chắn muốn xóa hủy không?`)){
+          try {
+            navigate('/employee'); 
+         } catch (error) {
+             errorToast("Bạn hủy không thành công")
+         }
         }
       }
   return (
@@ -58,10 +78,11 @@ export const ProductType = () => {
         <input type="text" className="form-control" id="vitri" name="vitri" value={productType.vitri} onChange={(e) => setProductType({...productType, vitri: e.target.value})} />
       </div>
       </div>
-      <div className="d-grid gap-1 col-4 mx-auto">
-        <button onClick={handleAddOrUpdate} className="btn btn-outline-success">
+      <div className="d-flex col-3 mx-auto justify-content-around">
+        <button onClick={handleAddOrUpdate} className="btn btn-outline-success px-5">
           {id < 0 ? 'Thêm' : 'Sửa'}
         </button>
+        <button onClick={handleBack} className='btn btn-outline-warning px-5'>Cancel</button>
       </div>
     </div>
   )

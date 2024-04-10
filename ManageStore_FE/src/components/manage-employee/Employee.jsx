@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import EmployeeService from '../../service/EmployeeService';
 import { useParams, useNavigate } from "react-router-dom";
+import { errorToast, successToast } from '../../util/toastily';
 export const Employee = () => {
     const [employee, setEmployee] = useState({});
     const params = useParams();
@@ -21,14 +22,33 @@ export const Employee = () => {
         try {
           if (id < 0) {
             await EmployeeService.addEmployee(employee);
+            successToast("Thêm nhân viên thành công");
           } else {
             await EmployeeService.updateEmployee(employee);
+            successToast("Cập nhập nhân viên thành công");
           }
-          navigate('/employee'); 
+          setTimeout(() => {
+            navigate('/employee'); 
+          }, 1000);
         } catch (error) {
           console.error('Error:', error.message);
+          if(id < 0) {
+            errorToast("Bạn thêm nhân viên thất bại");
+          }
+          else {
+            errorToast("Bạn cập nhập nhân viên thất bại");
+          }
         }
       }
+    const handleBack = () => {
+      if(window.confirm(`Bạn có chắc chắn muốn xóa hủy không?`)){
+        try {
+          navigate('/employee'); 
+       } catch (error) {
+           errorToast("Bạn hủy không thành công")
+       }
+      }
+    }
   return (
     <div className='container'>
         {id<0 ? (
@@ -70,10 +90,11 @@ export const Employee = () => {
         <input type="text" className="form-control" id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
       </div>
       </div>
-      <div className="d-grid gap-1 col-4 mx-auto">
-        <button onClick={handleAddOrUpdate} className="btn btn-outline-success">
+      <div className="d-flex col-3 mx-auto justify-content-around">
+        <button onClick={handleAddOrUpdate} className="btn btn-outline-success px-5">
           {id < 0 ? 'Thêm' : 'Sửa'}
         </button>
+        <button onClick={handleBack} className='btn btn-outline-warning px-5'>Cancel</button>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import ProductTypeService from '../../service/ProductTypeService';
+import { errorToast, successToast } from '../../util/toastily';
 export const HomeProductType = () => {
     const [productTypes, setProductTypes] = useState([]);
     useEffect(() => {
@@ -29,8 +30,13 @@ export const HomeProductType = () => {
         if (window.confirm(`Bạn có chắc chắn muốn xóa nhân viên ${e.ten} không?`)) {
             try {
                await ProductTypeService.deleteProductType(e.id);
+               successToast("Bạn đã xóa thành công loại mặt hàng")
+               setTimeout(() => {
+                navigate('/productType'); 
+            }, 1000);
             } catch (error) {
                 console.error('Error delete productType:', error.message);
+                errorToast("Bạn đã xóa không thành công loại mặt hàng")
             }
         }
       };
