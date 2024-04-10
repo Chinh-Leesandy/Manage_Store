@@ -6,6 +6,7 @@ import { errorToast, successToast } from '../../util/toastily';
 export const HomeEmployee = () => {
     const [employees, setEmployees] = useState([]);
     const [showPasswords, setShowPasswords] = useState({});
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     useEffect(() => {
         loadEmployees();
@@ -51,12 +52,28 @@ export const HomeEmployee = () => {
             }
         }
       };
+      const handleSearchChange = (e) => {
+        setSearchKeyword(e.target.value);
+    };
+
+    const filteredEmployees = employees.filter(employee => {
+        return employee.hoten.toLowerCase().includes(searchKeyword.toLowerCase());
+    });
     return (
         <div className='container'>
             <h2 className='fs-2 text-center'>Quản lý nhân viên</h2>
             <hr />
-            <div className="d-flex justify-content-end mb-2">
+            <div className="d-flex justify-content-between mb-2">
                 <button onClick={() => handleAdd()} className='btn btn-outline-success'>Thêm nhân viên</button>
+                <div className="col-4">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Tìm kiếm theo tên loại mặt hàng"
+                        value={searchKeyword}
+                        onChange={handleSearchChange}
+                    />
+                </div>
             </div>
             <table className="table table-striped">
                 <thead>
@@ -74,7 +91,7 @@ export const HomeEmployee = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {employees.map((employee) => (
+                    {filteredEmployees.map((employee) => (
                         <tr key={employee.id} className='text-center'>
                             <td>{employee.id}</td>
                             <td>{employee.hoten}</td>
