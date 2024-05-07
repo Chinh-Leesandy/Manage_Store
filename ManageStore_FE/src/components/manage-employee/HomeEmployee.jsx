@@ -69,7 +69,7 @@ export const HomeEmployee = () => {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Tìm kiếm theo tên loại mặt hàng"
+                        placeholder="Tìm kiếm theo tên nhân viên"
                         value={searchKeyword}
                         onChange={handleSearchChange}
                     />

@@ -28,7 +28,7 @@ export const ProductType = () => {
       console.error('Error loading productType:', error.message);
     }
   };
-
+  const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
   const validateForm = () => {
     const newvalidate = {};
     if (productType.ten === '' || !productType.ten) {
@@ -39,9 +39,13 @@ export const ProductType = () => {
     }
     if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
       newvalidate.thoigiannhap = "Thời gian nhập không được để trống.";
+    } else if (!dateFormatRegex.test(productType.thoigiannhap)) {
+      newvalidate.thoigiannhap = "Thời gian nhập phải có định dạng YYYY-MM-DD.";
     }
     if (productType.soluong === '' || !productType.soluong) {
       newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
+    } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100) {
+      newvalidate.soluong = "Số lượng loại mặt hàng phải nằm trong khoảng từ 1 đến 100.";
     }
     setValidation(newvalidate);
     return Object.keys(newvalidate).length === 0;
@@ -69,7 +73,7 @@ export const ProductType = () => {
         }
       }
     } else {
-      errorToast("Vui lòng nhập đầy đủ thông tin.");
+      errorToast("Vui lòng nhập thông tin.");
     }
   };
 
@@ -103,7 +107,7 @@ export const ProductType = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="thoigiannhap" className="form-label">Thời gian nhập:<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
-          <input type="date" className={validation.thoigiannhap ? 'form-control is-invalid' : 'form-control'} id="thoigiannhap" name="thoigiannhap" value={productType.thoigiannhap} onChange={(e) => setProductType({...productType, thoigiannhap: e.target.value})} required/>
+          <input type="text" className={validation.thoigiannhap ? 'form-control is-invalid' : 'form-control'} id="thoigiannhap" name="thoigiannhap" value={productType.thoigiannhap} onChange={(e) => setProductType({...productType, thoigiannhap: e.target.value})} required/>
           {validation.thoigiannhap && <div className="invalid-feedback">{validation.thoigiannhap}</div>}
         </div>
         <div className="col-md-6">
