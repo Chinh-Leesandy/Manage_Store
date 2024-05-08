@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import com.example.ManageStore.Model.NghiPhep;
 import com.example.ManageStore.Model.NghiPhepMonth;
 import com.example.ManageStore.Model.TKNghiPhep;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class TKNghiPhepDAO extends DAO {
 	private static final String SELECT_NP = "SELECT id, idnhanvien,nhanvien.hoten,nhanvien.chucvu, thoigian,songaynghi\r\n"
 			+ "FROM manager_store.nghiphep JOIN manager_store.nhanvien  ON nghiphep.idnhanvien = nhanvien.id";

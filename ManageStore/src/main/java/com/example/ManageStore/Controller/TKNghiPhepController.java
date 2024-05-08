@@ -1,5 +1,6 @@
 package com.example.ManageStore.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,8 @@ import com.example.ManageStore.DAO.TKNghiPhepDAO;
 @RestController
 @CrossOrigin
 public class TKNghiPhepController {
-	 private TKNghiPhepDAO nghiPhepDAO = new TKNghiPhepDAO(); 
+	@Autowired
+	 private TKNghiPhepDAO nghiPhepDAO;
 	 @GetMapping("/nghiphep")
 	 public ResponseEntity<?> getNghiPhep(){
 		 return nghiPhepDAO.selectNP();

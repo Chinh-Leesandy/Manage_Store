@@ -6,7 +6,7 @@ public class Employee {
 	private int id;
 	private String hoten,sdt, email, diachi,chucvu, username, password;
 	private Date ngaybatdaulam;
-	public Employee() {
+	public Employee(String nguyễnQuang, String number, String mail, String email, String quảnLýLoạiHàng, String quang, String username, Date date) {
 		super();
 		// TODO Auto-generated constructor stub
 	}

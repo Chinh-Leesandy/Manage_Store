@@ -1,5 +1,6 @@
 package com.example.ManageStore.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,8 @@ import com.example.ManageStore.DAO.TimeKeepingDAO;
 @RestController
 @CrossOrigin
 public class TKTimeSheetController {
-	private TimeKeepingDAO keepingDAO = new TimeKeepingDAO();
+	@Autowired
+	private TimeKeepingDAO keepingDAO;
 	 
 	@GetMapping("/employeeTimeKeeping")
 	public ResponseEntity<?> getEmployeeTimeKeeping () throws Exception{

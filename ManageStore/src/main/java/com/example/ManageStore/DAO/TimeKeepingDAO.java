@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.ManageStore.Model.TKTimeSheet;
 import com.example.ManageStore.Model.TimeKeeping;
+import org.springframework.stereotype.Repository;
 
 
+@Repository
 public class TimeKeepingDAO extends DAO {
 	private static final String SELECT_EMPLOYEE_TIME ="SELECT chamcong.id,idnhanvien,thoigianvao, thoigianra,nhanvien.hoten,nhanvien.chucvu\r\n"
 			+ "FROM manager_store.chamcong JOIN manager_store.nhanvien  ON chamcong.idnhanvien = nhanvien.id";

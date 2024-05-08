@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.ManageStore.Model.ProductType;
 
-
 public class ProductTypeDAO extends DAO{
 	private static final String SELECT_ALL = "SELECT * FROM loaimathang";
 	private static final String SELECT_PRODUCT_TYPE = "SELECT * FROM loaimathang WHERE id = ?";
@@ -18,7 +17,7 @@ public class ProductTypeDAO extends DAO{
 	private static final String UPDATE_PRODUCT_TYPE = "UPDATE loaimathang SET ten = ?, nhacungcap = ?, thoigiannhap =?, soluong=?, vitritrungbay = ? WHERE id = ?";
 	private static final String DELETE_PRODUCT_TYPE = "DELETE FROM loaimathang WHERE id = ?";
 	
-	public ResponseEntity<?> selectAll(){
+	public ResponseEntity<List<ProductType>> selectAll(){
 		List<ProductType> list = new ArrayList<>();
 		try (Connection connection = getConnection()) {
 			PreparedStatement ps = connection.prepareStatement(SELECT_ALL);
@@ -39,7 +38,7 @@ public class ProductTypeDAO extends DAO{
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> selectProductType(int id) {
+	public ResponseEntity<ProductType> selectProductType(int id) {
 		ProductType productType = new ProductType();
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(SELECT_PRODUCT_TYPE);
@@ -61,7 +60,7 @@ public class ProductTypeDAO extends DAO{
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> insertProductType(ProductType productType) {
+	public ResponseEntity<ProductType> insertProductType(ProductType productType) {
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(INSERT_PRODUCT_TYPE);
 			ps.setString(1, productType.getTen());
@@ -77,7 +76,7 @@ public class ProductTypeDAO extends DAO{
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> updateProductTyppe(ProductType productType){
+	public ResponseEntity<ProductType> updateProductTyppe(ProductType productType){
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(UPDATE_PRODUCT_TYPE);
 			ps.setString(1, productType.getTen());
@@ -94,7 +93,7 @@ public class ProductTypeDAO extends DAO{
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> deleteProductType (int id){
+	public ResponseEntity<String> deleteProductType (int id){
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(DELETE_PRODUCT_TYPE);
 			ps.setInt(1, id);

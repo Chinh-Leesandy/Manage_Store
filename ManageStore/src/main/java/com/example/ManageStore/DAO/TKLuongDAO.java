@@ -9,7 +9,9 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.example.ManageStore.Model.Luong;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class TKLuongDAO extends DAO {
 	private static final String SELECT_LUONG = "SELECT nhanvien.id,  nhanvien.hoten,  nhanvien.sdt,  nhanvien.diachi,  nhanvien.chucvu, luong.luongcoban\r\n"
 			+ "FROM manager_store.luong JOIN manager_store.nhanvien  ON luong.idnv = nhanvien.id";

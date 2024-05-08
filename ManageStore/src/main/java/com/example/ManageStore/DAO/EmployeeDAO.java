@@ -10,9 +10,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.example.ManageStore.Model.Employee;
-
-
-
 public class EmployeeDAO extends DAO {
 	private static final String SELECT_ALL = "select * from nhanvien";
 	private static final String SELECT_EMPLOYEE = "select * from nhanvien where id = ?";
@@ -22,7 +19,7 @@ public class EmployeeDAO extends DAO {
 	private static final String DELETE_EMPLOYEE_DEPENDENCIES = "DELETE FROM nghiphep WHERE idnhanvien = ?";
 	private static final String DELETE_EMPLOYEE_DEPENDENCIES2 = "DELETE FROM chamcong WHERE idnhanvien = ?";
 	
-	public ResponseEntity<?> selectAllEmployee() {
+	public ResponseEntity<List<Employee>> selectAllEmployee() {
 		List<Employee> employees = new ArrayList<>();
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(SELECT_ALL);
@@ -46,8 +43,8 @@ public class EmployeeDAO extends DAO {
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> selectEmployee (int id) {
-		Employee employee = new Employee();
+	public ResponseEntity<Employee> selectEmployee (int id) {
+		Employee employee = new Employee("Nguyễn Quang", "0948256153", "quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(SELECT_EMPLOYEE);
 			ps.setInt(1, id);
@@ -70,7 +67,7 @@ public class EmployeeDAO extends DAO {
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> insertEmployee(Employee employee)  {
+	public ResponseEntity<Employee> insertEmployee(Employee employee)  {
 		try (Connection connection = getConnection()) {
 			PreparedStatement ps = connection.prepareStatement(INSERT_EMPLOYEE);
 			ps.setString(1, employee.getHoten());
@@ -89,7 +86,7 @@ public class EmployeeDAO extends DAO {
 		return ResponseEntity.internalServerError().build();
 	}
 
-	public ResponseEntity<?> updateEmployee(Employee employee){
+	public ResponseEntity<Employee> updateEmployee(Employee employee){
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(UPDATE_EMPLOYEE);
 			ps.setString(1, employee.getHoten());
@@ -110,7 +107,7 @@ public class EmployeeDAO extends DAO {
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> deleteEmployee(int id) {
+	public ResponseEntity<String> deleteEmployee(int id) {
 		try (Connection connection = getConnection()) {
 	        connection.setAutoCommit(false);
 	        try (PreparedStatement ps = connection.prepareStatement(DELETE_EMPLOYEE_DEPENDENCIES)) {
