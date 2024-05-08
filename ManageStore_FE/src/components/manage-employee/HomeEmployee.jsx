@@ -44,8 +44,9 @@ export const HomeEmployee = () => {
                await EmployeeService.deleteEmployee(e.id);
                successToast("Bạn đã xóa thành công nhân viên")
                setTimeout(() => {
-                   navigate('/employee'); 
+                   window.location.reload();
                }, 1000);
+            //    location.reload();
             } catch (error) {
                 console.error('Error delete employee:', error.message);
                 errorToast("Bạn xóa không thành công nhân viên")
@@ -69,7 +70,7 @@ export const HomeEmployee = () => {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Tìm kiếm theo tên loại mặt hàng"
+                        placeholder="Tìm kiếm theo tên nhân viên"
                         value={searchKeyword}
                         onChange={handleSearchChange}
                     />

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DAO {
 	private String url = "jdbc:mysql://localhost:3306/manager_store";
 	private String User = "root";
-	private String pass = "123456789a";
+	private String pass = "root";
 	public DAO() {
 	}
 	protected Connection getConnection() {
