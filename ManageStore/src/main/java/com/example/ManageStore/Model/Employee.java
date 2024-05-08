@@ -6,12 +6,24 @@ public class Employee {
 	private int id;
 	private String hoten,sdt, email, diachi,chucvu, username, password;
 	private Date ngaybatdaulam;
-	public Employee(String nguyễnQuang, String number, String mail, String email, String quảnLýLoạiHàng, String quang, String username, Date date) {
+	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	public Employee(String hoten, String sdt, String email, String diachi, String chucvu, String username, String password, Date ngaybatdaulam) {
+		this.hoten = hoten;
+		this.sdt = sdt;
+		this.email = email;
+		this.diachi = diachi;
+		this.chucvu = chucvu;
+		this.username = username;
+		this.password = password;
+		this.ngaybatdaulam = ngaybatdaulam;
+	}
+
 	public Employee(String hoten, String sdt, String email, String diachi, String chucvu, String username,
-			String password) {
+					String password) {
 		super();
 		this.hoten = hoten;
 		this.sdt = sdt;

@@ -5,17 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
 import com.example.ManageStore.Model.TKTimeSheet;
 import com.example.ManageStore.Model.TimeKeeping;
-import org.springframework.stereotype.Repository;
-
-
-@Repository
 public class TimeKeepingDAO extends DAO {
 	private static final String SELECT_EMPLOYEE_TIME ="SELECT chamcong.id,idnhanvien,thoigianvao, thoigianra,nhanvien.hoten,nhanvien.chucvu\r\n"
 			+ "FROM manager_store.chamcong JOIN manager_store.nhanvien  ON chamcong.idnhanvien = nhanvien.id";
@@ -26,7 +21,7 @@ public class TimeKeepingDAO extends DAO {
 			+ "JOIN manager_store.nhanvien ON manager_store.chamcong.idnhanvien = nhanvien.id\r\n"
 			+ " WHERE MONTH(thoigianvao) = ?\r\n"
 			+ "GROUP BY idnhanvien;";
-	public ResponseEntity<?> selectEmployeeTime(){
+	public ResponseEntity<List<TimeKeeping>> selectEmployeeTime(){
 		List<TimeKeeping> keepings = new ArrayList<>();
 		try (Connection connection = getConnection()) {
 			PreparedStatement ps = connection.prepareStatement(SELECT_EMPLOYEE_TIME);
@@ -47,7 +42,7 @@ public class TimeKeepingDAO extends DAO {
 		return ResponseEntity.internalServerError().build();
 	}
 	
-	public ResponseEntity<?> selectTK(int month){
+	public ResponseEntity<List<TKTimeSheet>> selectTK(int month){
 		List<TKTimeSheet> sheets = new ArrayList<>();
 		try (Connection connection = getConnection()) {
 			PreparedStatement ps = connection.prepareStatement(TK_MONTH);
