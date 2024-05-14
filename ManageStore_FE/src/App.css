@@ -1,3 +1,15 @@
 .App {
   text-align: center;
 }
+.container-fluid{
+  width: 100vw;
+  height: 100vh;
+  background-color: #fffbf2;
+}
+.backgroundHome{
+  background-image: url(https://i.pinimg.com/736x/0f/01/b1/0f01b11dabc8378389f7fcbe2e7bb348.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}

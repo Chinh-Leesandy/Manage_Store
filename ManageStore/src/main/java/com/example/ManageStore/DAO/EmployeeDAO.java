@@ -44,7 +44,7 @@ public class EmployeeDAO extends DAO {
 	}
 	
 	public ResponseEntity<Employee> selectEmployee (int id) {
-		Employee employee = new Employee("Nguyễn Quang", "0948256153", "quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+		Employee employee = new Employee();
 		try (Connection connection = getConnection()){
 			PreparedStatement ps = connection.prepareStatement(SELECT_EMPLOYEE);
 			ps.setInt(1, id);

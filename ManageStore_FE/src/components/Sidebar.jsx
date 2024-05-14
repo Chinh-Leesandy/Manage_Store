@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Collapse } from 'react-bootstrap';
 
 export const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
       <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
@@ -21,19 +21,21 @@ export const Sidebar = () => {
             </a>
           </li>
           <li>
-            <spanspan  onClick={() => setOpen(!open)} className="nav-link px-0 align-middle">
-              <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Thống kê</span>
+            <spanspan className="nav-link px-0 align-middle">
+              <a href="/tk" className="nav-link align-middle px-0">
+                  <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Thống kê</span>
+              </a>
             </spanspan>
             <Collapse in={open}>
               <ul className="nav flex-column ms-1">
                 <li className="w-100">
-                  <a href="/tkluong" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê lương nhân viên</span>  </a>
+                  <a href="/tkthang" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê doanh thu theo tháng</span>  </a>
                 </li>
                 <li>
-                  <a href="/tkgiolam" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê giờ làm việc </span>  </a>
+                  <a href="/tkkhachhang" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê doanh thu theo khách hàng </span>  </a>
                 </li>
                 <li>
-                  <a href="/tknghiphep" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê nghỉ phép</span>  </a>
+                  <a href="/tkthoigian" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê doanh thu theo khoảng thời gian</span>  </a>
                 </li>
               </ul>
             </Collapse>

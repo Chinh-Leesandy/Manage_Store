@@ -71,7 +71,7 @@ export const HomeProductType = () => {
                     />
                 </div>
             </div>
-            <table className="table table-striped">
+            <table className="table table-striped rounded-2">
                 <thead>
                     <tr className='text-center'>
                         <td>ID</td>
