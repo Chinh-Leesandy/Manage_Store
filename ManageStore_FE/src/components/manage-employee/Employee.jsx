@@ -32,9 +32,7 @@ export const Employee = () => {
     }
     if (employee.ngaybatdaulv === '' || !employee.ngaybatdaulv) {
       newvalidate.ngaybatdaulv = "Ngày bắt đầu làm việc không được để trống.";
-    } else if (!dateFormatRegex.test(employee.ngaybatdaulv)) {
-    newvalidate.ngaybatdaulv = "Ngày bắt đầu làm việc phải có định dạng YYYY-MM-DD.";
-    }
+    } 
     if (employee.email === '' || !employee.email) {
       newvalidate.email = "Email nhân viên không được để trống.";
     } else if (!/^[^\s@]+@gmail\.com$/.test(employee.email)) {
@@ -93,6 +91,13 @@ export const Employee = () => {
             errorToast("Bạn cập nhập nhân viên thất bại");
           }
         }
+      } else {
+        if(id < 0) {
+          errorToast("Bạn thêm nhân viên thất bại");
+        }
+        else {
+          errorToast("Bạn cập nhập nhân viên thất bại");
+        }
       }
     }
     const handleBack = () => {
@@ -149,7 +154,7 @@ export const Employee = () => {
           </div>
           <div className="col-12">
             <label htmlFor="ngaybatdaulv" className="form-label">Ngày bắt đầu làm việc:<span style={{ color: 'red', marginLeft: '5px' }}>*</span> </label>
-            <input type="text" className={validation.ngaybatdaulv ? 'form-control is-invalid' : 'form-control'} id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
+            <input type="date" className={validation.ngaybatdaulv ? 'form-control is-invalid' : 'form-control'} id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
             {validation.ngaybatdaulv && <div className="invalid-feedback">{validation.ngaybatdaulv}</div>}
           </div>
         </div>

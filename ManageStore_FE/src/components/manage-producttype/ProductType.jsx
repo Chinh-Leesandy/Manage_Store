@@ -73,7 +73,11 @@ export const ProductType = () => {
         }
       }
     } else {
-      errorToast("Vui lòng nhập thông tin.");
+      if (id < 0) {
+        errorToast("Bạn thêm không thành công loại mặt hàng");
+      } else {
+        errorToast("Bạn cập nhập không thành công loại mặt hàng");
+      }
     }
   };
 
@@ -107,7 +111,7 @@ export const ProductType = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="thoigiannhap" className="form-label">Thời gian nhập:<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
-          <input type="text" className={validation.thoigiannhap ? 'form-control is-invalid' : 'form-control'} id="thoigiannhap" name="thoigiannhap" value={productType.thoigiannhap} onChange={(e) => setProductType({...productType, thoigiannhap: e.target.value})} required/>
+          <input type="date" className={validation.thoigiannhap ? 'form-control is-invalid' : 'form-control'} id="thoigiannhap" name="thoigiannhap" value={productType.thoigiannhap} onChange={(e) => setProductType({...productType, thoigiannhap: e.target.value})} required/>
           {validation.thoigiannhap && <div className="invalid-feedback">{validation.thoigiannhap}</div>}
         </div>
         <div className="col-md-6">
