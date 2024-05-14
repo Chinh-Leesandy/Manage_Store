@@ -46,6 +46,7 @@ export const HomeEmployee = () => {
                setTimeout(() => {
                    navigate('/employee'); 
                }, 1000);
+               window.location.reload();
             } catch (error) {
                 console.error('Error delete employee:', error.message);
                 errorToast("Bạn xóa không thành công nhân viên")

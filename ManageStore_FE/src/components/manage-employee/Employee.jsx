@@ -30,8 +30,8 @@ export const Employee = () => {
     } else if (!/^\+?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(employee.sdt)) {
       newvalidate.sdt = "Số điện thoại không hợp lệ.";
     }
-    if (employee.ngaybatdaulv === '' || !employee.ngaybatdaulv) {
-      newvalidate.ngaybatdaulv = "Ngày bắt đầu làm việc không được để trống.";
+    if (employee.ngaybatdaulam === '' || !employee.ngaybatdaulam) {
+      newvalidate.ngaybatdaulam = "Ngày bắt đầu làm việc không được để trống.";
     } 
     if (employee.email === '' || !employee.email) {
       newvalidate.email = "Email nhân viên không được để trống.";
@@ -155,7 +155,7 @@ export const Employee = () => {
           <div className="col-12">
             <label htmlFor="ngaybatdaulv" className="form-label">Ngày bắt đầu làm việc:<span style={{ color: 'red', marginLeft: '5px' }}>*</span> </label>
             <input type="date" className={validation.ngaybatdaulv ? 'form-control is-invalid' : 'form-control'} id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
-            {validation.ngaybatdaulv && <div className="invalid-feedback">{validation.ngaybatdaulv}</div>}
+            {validation.ngaybatdaulam && <div className="invalid-feedback">{validation.ngaybatdaulam}</div>}
           </div>
         </div>
         <div className="d-flex col-3 mx-auto justify-content-around">
