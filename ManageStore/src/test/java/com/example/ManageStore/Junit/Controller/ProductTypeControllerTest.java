@@ -58,8 +58,8 @@ public class ProductTypeControllerTest {
     @Test
     public void testGetAllProductType1() throws Exception {
         List<ProductType> productTypes = Arrays.asList(
-                new ProductType(1, "Bìa hồ sơ", "Stationery Inc", Date.valueOf("2024-04-02"), 3, "Kệ số 2 - Hàng số 3"),
-                new ProductType(2, "Bút", "Deli", Date.valueOf("2024-03-15"), 10, "Kệ số 2 - Hàng số 1")
+                new ProductType(1, "Đầm", "Quảng Chau", Date.valueOf("2024-04-02"), 3, "Kệ số 2 - Hàng số 3"),
+                new ProductType(2, "Vest", "Việt Tiến", Date.valueOf("2024-03-15"), 10, "Kệ số 2 - Hàng số 1")
         );
         ResponseEntity<List<ProductType>> responseEntity = ResponseEntity.ok().body(productTypes);
 
@@ -69,14 +69,14 @@ public class ProductTypeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].ten").value("Bìa hồ sơ"))
-                .andExpect(jsonPath("$[0].ncc").value("Stationery Inc"))
+                .andExpect(jsonPath("$[0].ten").value("Đầm"))
+                .andExpect(jsonPath("$[0].ncc").value("Quảng Châu"))
                 .andExpect(jsonPath("$[0].thoigiannhap").value("2024-04-02"))
                 .andExpect(jsonPath("$[0].soluong").value(3))
                 .andExpect(jsonPath("$[0].vitri").value("Kệ số 2 - Hàng số 3"))
                 .andExpect(jsonPath("$[1].id").value(2))
-                .andExpect(jsonPath("$[1].ten").value("Bút"))
-                .andExpect(jsonPath("$[1].ncc").value("Deli"))
+                .andExpect(jsonPath("$[1].ten").value("Vest"))
+                .andExpect(jsonPath("$[1].ncc").value("Việt Tiến"))
                 .andExpect(jsonPath("$[1].thoigiannhap").value("2024-03-15"))
                 .andExpect(jsonPath("$[1].soluong").value(10))
                 .andExpect(jsonPath("$[1].vitri").value("Kệ số 2 - Hàng số 1"));
@@ -110,5 +110,75 @@ public class ProductTypeControllerTest {
         when(productTypeDAO.deleteProductType(3)).thenReturn(ResponseEntity.ok().body("Delete Product Type"));
         ResponseEntity<?> responseEntity = productTypeController.deleteProductType("3");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeError() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeErrorName() throws Exception {
+        ProductType productType = new ProductType( "", "Stationery Inc", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeErrorNCC() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeErrorTime() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "Stationery Inc", null, 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeErrorAmount() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeError() throws Exception {
+        ProductType productType = new ProductType( "", "", null,0 , "");
+        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeErrorName() throws Exception {
+        ProductType productType = new ProductType( "", "Stationery Inc", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeErrorNCC() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeErrorTime() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "Stationery Inc", null, 5, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeErrorAmount() throws Exception {
+        ProductType productType = new ProductType( "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
+        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
 }

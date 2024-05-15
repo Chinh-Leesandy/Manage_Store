@@ -62,7 +62,70 @@ public class EmployeeControllerTest {
         ResponseEntity<?> responseEntity = controller.postEmployee(employee);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
+    @Test
+    public void testAddEmployeeErrorSDT () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
 
+    @Test
+    public void testAddEmployeeErrorName () throws Exception{
+        Employee employee = new Employee("", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorEmail () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorDiaChi () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorChucVu () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorUsername () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorPassword () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeError () throws Exception{
+        Employee employee = new Employee("", "","", "", "", "", "", null);
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddEmployeeErrorTime () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", null);
+        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
     @Test
     public void testPutEmployee() throws Exception{
         Employee employee = new Employee(3, "Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-15"));
@@ -70,11 +133,74 @@ public class EmployeeControllerTest {
         ResponseEntity<?> responseEntity = controller.putEmployee(employee);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
-
     @Test
     public void testDeleteEmployee() throws Exception {
         when(employeeDAO.deleteEmployee(3)).thenReturn(ResponseEntity.ok().body("Employee deleted successfully"));
         ResponseEntity<?> responseEntity = controller.deleteEmployee("3");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorSDT () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testEditEmployeeErrorName () throws Exception{
+        Employee employee = new Employee(3,"", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorEmail () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorDiaChi () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorChucVu () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorUsername () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorPassword () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeError () throws Exception{
+        Employee employee = new Employee(3,"", "","", "", "", "", "", null);
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditEmployeeErrorTime () throws Exception{
+        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", null);
+        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
 }
