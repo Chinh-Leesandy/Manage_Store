@@ -21,7 +21,6 @@ export const Employee = () => {
     };
     const validateForm = () => {
       const newvalidate = {};
-      const passwordErrors = [];
   
       if (employee.hoten === '' || !employee.hoten) {
           newvalidate.hoten = "Tên nhân viên không được để trống.";
@@ -50,27 +49,9 @@ export const Employee = () => {
       }
       if (employee.password === '' || !employee.password) {
           newvalidate.password = "Mật khẩu nhân viên không được để trống.";
-      } else {
-          if (employee.password.length < 8) {
-              passwordErrors.push("Mật khẩu phải có ít nhất 8 ký tự.");
-          }
-          if (!/[a-z]/.test(employee.password)) {
-              passwordErrors.push("Mật khẩu phải chứa ít nhất một chữ viết thường.");
-          }
-          if (!/[A-Z]/.test(employee.password)) {
-              passwordErrors.push("Mật khẩu phải chứa ít nhất một chữ viết hoa.");
-          }
-          if (!/\d/.test(employee.password)) {
-              passwordErrors.push("Mật khẩu phải chứa ít nhất một số.");
-          }
-          if (!/\W/.test(employee.password)) {
-              passwordErrors.push("Mật khẩu phải chứa ít nhất một ký tự đặc biệt.");
-          }
-          if (passwordErrors.length > 0) {
-              newvalidate.password = passwordErrors.join("\n");
-          }
+      } else if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/.test(employee.password){
+          newvalidate.password = "Mật khẩu phải có ít nhất 8 ký tự, phải có chữ viết hoa, chữ thường, chữ số và ký tự đặc biệt.";
       }
-  
       setValidation(newvalidate);
       return Object.keys(newvalidate).length === 0;
   };
@@ -156,13 +137,7 @@ export const Employee = () => {
           <div className="col-md-6">
             <label htmlFor="password" className="form-label">Password:<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
             <input type="password" className={validation.password ? 'form-control is-invalid' : 'form-control'} id="password" name="password" value={employee.password} onChange={(e) => setEmployee({...employee, password: e.target.value})} required />
-            {validation.password && (
-                <div className="invalid-feedback validation-password">
-                    {validation.password.split("\n").map((error, index) => (
-                        <div key={index}>{error}</div>
-                    ))}
-                </div>
-            )}
+            {validation.password && (<div className="invalid-feedback validation-password">{validation.password}</div>)}
           </div>
           <div className="col-12">
             <label htmlFor="ngaybatdaulv" className="form-label">Ngày bắt đầu làm việc:<span style={{ color: 'red', marginLeft: '5px' }}>*</span> </label>
