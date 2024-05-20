@@ -31,17 +31,17 @@ export const ProductType = () => {
   const validateForm = () => {
   const newvalidate = {};
   if (productType.ten === '' || !productType.ten) {
-    newvalidate.ten = "Tên loại mặt hàng không được để trống.";
+  newvalidate.ten = "Tên loại mặt hàng không được để trống.";
   } else if (!/^[a-zA-Z\s]+$/.test(productType.ten)) {
     newvalidate.ten = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.";
   }
-
+  
   if (productType.ncc === '' || !productType.ncc) {
-    newvalidate.ncc = "Nhà cung cấp không được để trống.";
+    newvalidate.ncc = "Tên nhà cung cấp không được để trống.";
   } else if (!/^[a-zA-Z\s]+$/.test(productType.ncc)) {
-    newvalidate.ncc = "Nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
+    newvalidate.ncc = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
   }
-
+    
   if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
     newvalidate.thoigiannhap = "Thời gian nhập không được để trống.";
   }
@@ -120,7 +120,7 @@ export const ProductType = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="soluong" className="form-label">Số lượng loại:<span style={{ color: 'red', marginLeft: '5px' }}>*</span></label>
-          <input type="text" className={validation.soluong ? 'form-control is-invalid' : 'form-control'} id="soluong" name="soluong" value={productType.soluong} onChange={(e) => setProductType({...productType, soluong: e.target.value})} required/>
+          <input type="number" className={validation.soluong ? 'form-control is-invalid' : 'form-control'} id="soluong" name="soluong" value={productType.soluong} onChange={(e) => setProductType({...productType, soluong: e.target.value})} required/>
           {validation.soluong && <div className="invalid-feedback validation-soluong">{validation.soluong}</div>}
         </div>
         <div className="col-12">
