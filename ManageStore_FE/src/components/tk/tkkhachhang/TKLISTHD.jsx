@@ -1,10 +1,8 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-
-export const TKHoaDon = () => {
+export const TKLISTHD = () => {
     const location = useLocation();
     const invoices = location.state.invoices;
-    console.log(invoices);
     const totalAmountTk = invoices.reduce((total, items) => total + items.invoiceProducts.reduce((sum, item) => sum + item.amount, 0), 0);
     const totalPriceTk =  invoices.reduce((total, items) => total + items.invoiceProducts.reduce((sum, item) => sum + item.totalPrice, 0), 0);
     const formatCurrency = (value) => {
@@ -12,11 +10,11 @@ export const TKHoaDon = () => {
     };
     const navigate = useNavigate();
     const handleView = (invoiceProducts) => {
-        navigate('/tkhoadonkh', { state: { invoiceProducts } })
+        navigate('/hoadonct', { state: { invoiceProducts } })
     }
   return (
     <div className='container'>
-        <h2 className='text-center'>Danh Sách Hóa Đơn</h2>
+        <h2 className='text-center'>Danh Sách Hóa Đơn Theo Khách Hàng</h2>
         <p><span className='strong'>Tổng doanh thu:</span> {formatCurrency(totalPriceTk)}</p>
       <p><span className='strong'>Tổng sản phẩm:</span> {totalAmountTk}</p>
       <table className='table table-striped'>

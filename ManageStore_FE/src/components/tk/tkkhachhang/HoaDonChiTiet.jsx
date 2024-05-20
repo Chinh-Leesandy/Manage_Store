@@ -1,9 +1,10 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom';
 
-export const TKHoaDonKH = () => {
+import { useLocation } from 'react-router-dom';
+export const HoaDonChiTiet = () => {
     const location = useLocation();
     const invoiceProducts = location.state.invoiceProducts;
+    console.log(invoiceProducts)
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
     };

@@ -48,8 +48,8 @@ export const ProductType = () => {
 
   if (productType.soluong === '' || !productType.soluong) {
     newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
-  } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100) {
-    newvalidate.soluong = "Số lượng loại mặt hàng phải nằm trong khoảng từ 1 đến 100.";
+  } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100 || productType.soluong.includes('.')) {
+    newvalidate.soluong = "Số lượng loại mặt hàng là số nguyên nằm trong khoảng từ 1 đến 100.";
   }
   setValidation(newvalidate);
   return Object.keys(newvalidate).length === 0;

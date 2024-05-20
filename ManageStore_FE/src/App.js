@@ -9,9 +9,11 @@ import { ProductType } from './components/manage-producttype/ProductType';
 import { Home } from './components/Home';
 import { Tk } from './components/tk/Tk';
 import { TKThang } from './components/tk/tkthang/TKThang';
-import { TKHoaDon } from './components/tk/tkthang/TKHoaDon';
+import { TKHoaDonThang } from './components/tk/tkthang/TKHoaDonThang';
 import { TKKhachHang } from './components/tk/tkkhachhang/TKKhachHang';
 import { TKHoaDonKH } from './components/tk/tkthang/TKHoaDonKH';
+import { TKLISTHD } from './components/tk/tkkhachhang/TKLISTHD';
+import { HoaDonChiTiet } from './components/tk/tkkhachhang/HoaDonChiTiet';
 
 function App() {
   const location = useLocation();
@@ -33,9 +35,11 @@ function App() {
             <Route path='/productType/:id' element={<ProductType />} />
             <Route path='/tk' element={<Tk/>} />
             <Route path='/tkthang' element={<TKThang/>} />
-            <Route path='/tkhoadon' element={<TKHoaDon/>} />
+            <Route path='/tkhoadon' element={<TKHoaDonThang/>} />
             <Route path='/tkhoadonkh' element={<TKHoaDonKH/>} />
             <Route path='/tkkhachhang' element={<TKKhachHang/>} />
+            <Route path ='/tklisthd' element = {<TKLISTHD/>}/>
+            <Route path ='/hoadonct' element = {<HoaDonChiTiet/>}/>
           </Routes>
           <ToastContainer />
         </div>

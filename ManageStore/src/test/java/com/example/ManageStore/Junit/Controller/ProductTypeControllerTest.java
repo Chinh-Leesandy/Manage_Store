@@ -187,7 +187,7 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên lớn hơn hoặc bằng 1."));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên lớn hơn hoặc bằng 1."));
     }
     @Test
     public void testAddProductTypeValidationName() throws Exception {
@@ -313,7 +313,7 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên lớn hơn hoặc bằng 1."));
     }
     @Test
     public void testAddProductTypeValidationAmountMax() throws Exception {
@@ -323,7 +323,15 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải nhỏ hơn hoặc bằng 100."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên nhỏ hơn hoặc bằng 100."));
+    }
+    @Test
+    public void testAddProductTypeValidationAmountFloat() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), (int)3.5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
     @Test
     public void testAddProductTypeValidationAmountMinSuccess() throws Exception {
@@ -418,7 +426,7 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên lớn hơn hoặc bằng 1."));
     }
     @Test
     public void testEditProductTypeValidationAmountMax() throws Exception {
@@ -428,7 +436,7 @@ public class ProductTypeControllerTest {
                         .content(objectMapper.writeValueAsString(productType)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải nhỏ hơn hoặc bằng 100."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng số nguyên nhỏ hơn hoặc bằng 100."));
     }
     @Test
     public void testEditProductTypeValidationAmountMinSuccess() throws Exception {
@@ -447,5 +455,13 @@ public class ProductTypeControllerTest {
         when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
         ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmountFloat() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), (int) 3.5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

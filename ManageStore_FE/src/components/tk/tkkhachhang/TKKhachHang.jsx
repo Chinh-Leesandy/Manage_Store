@@ -27,7 +27,7 @@ export const TKKhachHang = () => {
   };
   const navigate = useNavigate();
   const handleView = (invoices) => {
-    navigate('/tkhoadonbykh', { state: { invoices } })
+    navigate('/tklisthd', { state: { invoices } })
   }
   return (
     <div className='container'>

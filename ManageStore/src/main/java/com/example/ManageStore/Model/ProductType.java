@@ -15,8 +15,8 @@ public class ProductType {
 	@NotNull(message = "Thời gian nhập không được để trống.")
 	private Date thoigiannhap;
 	@NotNull(message = "Số lượng loại mặt hàng không được để trống.")
-	@Min(value = 1, message = "Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1.")
-	@Max(value = 100, message = "Số lượng loại mặt hàng phải nhỏ hơn hoặc bằng 100.")
+	@Min(value = 1, message = "Số lượng loại mặt hàng số nguyên lớn hơn hoặc bằng 1.")
+	@Max(value = 100, message = "Số lượng loại mặt hàng số nguyên nhỏ hơn hoặc bằng 100.")
 	private int soluong;
 	private String vitri;
 	public ProductType() {
