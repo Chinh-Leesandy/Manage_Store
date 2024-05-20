@@ -28,28 +28,32 @@ export const ProductType = () => {
       console.error('Error loading productType:', error.message);
     }
   };
-  const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
   const validateForm = () => {
-    const newvalidate = {};
-    if (productType.ten === '' || !productType.ten) {
-      newvalidate.ten = "Tên loại mặt hàng không được để trống.";
-    }
-    if (productType.ncc === '' || !productType.ncc) {
-      newvalidate.ncc = "Nhà cung cấp không được để trống.";
-    }
-    if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
-      newvalidate.thoigiannhap = "Thời gian nhập không được để trống.";
-    } else if (!dateFormatRegex.test(productType.thoigiannhap)) {
-      newvalidate.thoigiannhap = "Thời gian nhập phải có định dạng YYYY-MM-DD.";
-    }
-    if (productType.soluong === '' || !productType.soluong) {
-      newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
-    } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100) {
-      newvalidate.soluong = "Số lượng loại mặt hàng phải nằm trong khoảng từ 1 đến 100.";
-    }
-    setValidation(newvalidate);
-    return Object.keys(newvalidate).length === 0;
-  };
+  const newvalidate = {};
+  if (productType.ten === '' || !productType.ten) {
+    newvalidate.ten = "Tên loại mặt hàng không được để trống.";
+  } else if (!/^[a-zA-Z\s]+$/.test(productType.ten)) {
+    newvalidate.ten = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.";
+  }
+
+  if (productType.ncc === '' || !productType.ncc) {
+    newvalidate.ncc = "Nhà cung cấp không được để trống.";
+  } else if (!/^[a-zA-Z\s]+$/.test(productType.ncc)) {
+    newvalidate.ncc = "Nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
+  }
+
+  if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
+    newvalidate.thoigiannhap = "Thời gian nhập không được để trống.";
+  }
+
+  if (productType.soluong === '' || !productType.soluong) {
+    newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
+  } else if (isNaN(productType.soluong) || productType.soluong <= 1 || productType.soluong => 100) {
+    newvalidate.soluong = "Số lượng loại mặt hàng phải nằm trong khoảng từ 1 đến 100.";
+  }
+  setValidation(newvalidate);
+  return Object.keys(newvalidate).length === 0;
+};
 
   const handleAddOrUpdate = async () => {
     if (validateForm()) {
