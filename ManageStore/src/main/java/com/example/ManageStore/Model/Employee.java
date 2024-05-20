@@ -1,10 +1,35 @@
 package com.example.ManageStore.Model;
 
+import jakarta.validation.constraints.*;
+
 import java.sql.Date;
 
 public class Employee {
 	private int id;
-	private String hoten, sdt, email, diachi, chucvu, username, password;
+	@NotBlank(message = "Tên nhân viên không được để trống.")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.")
+	private String hoten;
+	@NotBlank(message = "Số điện thoại không được để trống.")
+	@Pattern(regexp = "^\\+?(\\d{3})\\)?[-. ]?(\\d{3})[-. ]?(\\d{4})$", message = "Số điện thoại không hợp lệ.")
+	private String sdt;
+	@NotBlank(message = "Email nhân viên không được để trống.")
+	@Pattern(regexp = ".+@.+", message = "Email không hợp lệ.")
+	private String email;
+	@NotBlank(message = "Địa chỉ nhân viên không được để trống.")
+	private String diachi;
+	@NotBlank(message = "Chức vụ nhân viên không được để trống.")
+	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Chức vụ chỉ được chứa chữ cái và khoảng trắng.")
+	private String chucvu;
+	@NotBlank(message = "Tài khoản đăng nhập nhân viên không được để trống.")
+	private String username;
+	@NotBlank(message = "Mật khẩu nhân viên không được để trống.")
+	@Size(min = 8, message = "Mật khẩu phải có ít nhất 8 ký tự.")
+	@Pattern(regexp = ".*[a-z].*", message = "Mật khẩu phải chứa ít nhất một chữ viết thường.")
+	@Pattern(regexp = ".*[A-Z].*", message = "Mật khẩu phải chứa ít nhất một chữ viết hoa.")
+	@Pattern(regexp = ".*\\d.*", message = "Mật khẩu phải chứa ít nhất một số.")
+	@Pattern(regexp = ".*\\W.*", message = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.")
+	private String password;
+	@NotNull(message = "Ngày bắt đầu làm việc không được để trống.")
 	private Date ngaybatdaulam;
 
 	public Employee() {

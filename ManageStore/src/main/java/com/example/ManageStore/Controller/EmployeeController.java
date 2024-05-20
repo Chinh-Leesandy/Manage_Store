@@ -1,6 +1,8 @@
 package com.example.ManageStore.Controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +35,18 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/addEmployee")
-	public ResponseEntity<?> postEmployee (@RequestBody Employee employee){
+	public ResponseEntity<?> postEmployee (@Valid @RequestBody Employee employee, BindingResult result){
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
 		return employeeDAO.insertEmployee(employee);
 	}
 	
 	@PutMapping("/updateEmployee")
-	public ResponseEntity<?> putEmployee (@RequestBody Employee employee){
+	public ResponseEntity<?> putEmployee (@Valid @RequestBody Employee employee, BindingResult result){
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
 		return employeeDAO.updateEmployee(employee);
 	}
 	

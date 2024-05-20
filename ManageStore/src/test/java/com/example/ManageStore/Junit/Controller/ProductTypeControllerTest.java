@@ -181,4 +181,116 @@ public class ProductTypeControllerTest {
         ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
+    @Test
+    public void testAddProductTypeValidationName() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationName1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationNCC() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationNCC1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationAmount() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationAmount1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationAmount3() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationAmount4() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationName() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationName1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationNCC() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationNCC1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmount() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmount1() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmount3() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmount4() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    }
 }

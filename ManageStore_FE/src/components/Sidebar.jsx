@@ -34,9 +34,9 @@ export const Sidebar = () => {
                 <li>
                   <a href="/tkkhachhang" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê doanh thu theo khách hàng </span>  </a>
                 </li>
-                <li>
+                {/* <li>
                   <a href="/tkthoigian" className="nav-link px-0"> <span className="d-none d-sm-inline">Thống kê doanh thu theo khoảng thời gian</span>  </a>
-                </li>
+                </li> */}
               </ul>
             </Collapse>
           </li>

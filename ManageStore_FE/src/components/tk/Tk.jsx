@@ -11,9 +11,9 @@ export const Tk = () => {
         <a href="/tkkhachhang" className="d-inline-flex focus-ring-warning py-1 px-2 mt-3 text-decoration-none border-warning-subtle border rounded-2">
             Thống kê doanh thu theo khách hàng
         </a>
-        <a href="/tkthoigian" className="d-inline-flex focus-ring-warning py-1 px-2 mt-3 text-decoration-none border-warning-subtle border rounded-2">
+        {/* <a href="/tkthoigian" className="d-inline-flex focus-ring-warning py-1 px-2 mt-3 text-decoration-none border-warning-subtle border rounded-2">
             Thống kê doanh thu theo khoảng thời gian
-        </a>
+        </a> */}
         </div>
     </div>
   )
