@@ -3,11 +3,13 @@ package com.example.ManageStore.Junit.Controller;
 import com.example.ManageStore.Controller.ProductTypeController;
 import com.example.ManageStore.DAO.ProductTypeDAO;
 import com.example.ManageStore.Model.ProductType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.validation.BindingResult;
+
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +46,8 @@ public class ProductTypeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public  void setUp() {
@@ -48,8 +56,8 @@ public class ProductTypeControllerTest {
     @Test
     public void testGetAllProductType() throws Exception {
         List<ProductType> list = Arrays.asList(
-                new ProductType( 1,"Bìa hồ sơ","Stationery Inc", Date.valueOf("2024-04-02"),3,"Kệ số 2, Hàng số 3"),
-                new ProductType(2, "Bút","Deli", Date.valueOf("2024-03-15"),10,"Kệ số 2, Hàng số 1")
+                new ProductType(1, "Đầm", "Quảng Châu", Date.valueOf("2024-04-02"), 3, "Kệ số 2 - Hàng số 3"),
+                new ProductType(2, "Vest", "Việt Tiến", Date.valueOf("2024-03-15"), 10, "Kệ số 2 - Hàng số 1")
         );
         when(productTypeDAO.selectAll()).thenReturn(ResponseEntity.ok().body(list));
         ResponseEntity<?> responseEntity = productTypeController.getProductType();
@@ -58,7 +66,7 @@ public class ProductTypeControllerTest {
     @Test
     public void testGetAllProductType1() throws Exception {
         List<ProductType> productTypes = Arrays.asList(
-                new ProductType(1, "Đầm", "Quảng Chau", Date.valueOf("2024-04-02"), 3, "Kệ số 2 - Hàng số 3"),
+                new ProductType(1, "Đầm", "Quảng Châu", Date.valueOf("2024-04-02"), 3, "Kệ số 2 - Hàng số 3"),
                 new ProductType(2, "Vest", "Việt Tiến", Date.valueOf("2024-03-15"), 10, "Kệ số 2 - Hàng số 1")
         );
         ResponseEntity<List<ProductType>> responseEntity = ResponseEntity.ok().body(productTypes);
@@ -91,17 +99,39 @@ public class ProductTypeControllerTest {
 
     @Test
     public void testPostProductType() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testPostProductTypeEmptyVitri() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void testPutProductType() throws Exception {
-        ProductType productType = new ProductType(3, "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 3, "Kệ số 1 - Hàng số 2");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.ok().body(productType));
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
+        ProductType productType = new ProductType(3, "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 3, "Kệ số 1 - Hàng số 2");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testPutProductTypeEmptyVitri() throws Exception {
+        ProductType productType = new ProductType(3, "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 3, "");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
@@ -112,185 +142,310 @@ public class ProductTypeControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testAddProductTypeError() throws Exception {
+    public void testAddProductTypeEmptyAll() throws Exception {
         ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
     @Test
-    public void testAddProductTypeErrorName() throws Exception {
-        ProductType productType = new ProductType( "", "Stationery Inc", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeEmptyName() throws Exception {
+        ProductType productType = new ProductType( null, "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng không được để trống."));
     }
     @Test
-    public void testAddProductTypeErrorNCC() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeEmptyNCC() throws Exception {
+        ProductType productType = new ProductType( "Đầm", null, Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp không được để trống."));
     }
     @Test
-    public void testAddProductTypeErrorTime() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "Stationery Inc", null, 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeEmptyTime() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", null, 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'thoigiannhap')].defaultMessage").value("Thời gian nhập không được để trống."));
     }
     @Test
-    public void testAddProductTypeErrorAmount() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeEmptyAmount() throws Exception {
+        ProductType productType = new ProductType("Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
+    }
+
+    @Test
+    public void testEditProductTypeEmptyAll() throws Exception {
+        ProductType productType = new ProductType( "", "", null, 0, "");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
     @Test
-    public void testEditProductTypeError() throws Exception {
-        ProductType productType = new ProductType( "", "", null,0 , "");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeEmptyName() throws Exception {
+        ProductType productType = new ProductType( null, "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng không được để trống."));
     }
     @Test
-    public void testEditProductTypeErrorName() throws Exception {
-        ProductType productType = new ProductType( "", "Stationery Inc", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeEmptyNCC() throws Exception {
+        ProductType productType = new ProductType( "Đầm", null, Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp không được để trống."));
     }
     @Test
-    public void testEditProductTypeErrorNCC() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeEmptyTime() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", null, 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'thoigiannhap')].defaultMessage").value("Thời gian nhập không được để trống."));
     }
     @Test
-    public void testEditProductTypeErrorTime() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "Stationery Inc", null, 5, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-    }
-    @Test
-    public void testEditProductTypeErrorAmount() throws Exception {
-        ProductType productType = new ProductType( "Sổ", "Stationery Inc", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
-        when(productTypeDAO.updateProductTyppe(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.putProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeEmptyAmount() throws Exception {
+        ProductType productType = new ProductType("Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 0, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
     }
     @Test
     public void testAddProductTypeValidationName() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        ProductType productType = new ProductType( "123", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testAddProductTypeValidationName1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationNameSpecialCharacters() throws Exception {
+        ProductType productType = new ProductType( "@Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng."));
+    }
+    @Test
+    public void testAddProductTypeValidationNameSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
     public void testAddProductTypeValidationNCC() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        ProductType productType = new ProductType( "Đầm", "123", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testAddProductTypeValidationNCC1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationNCCSpecialCharacters() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "@Quảng", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testAddProductTypeValidationAmount() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationNCCSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testAddProductTypeValidationAmount1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationAmountSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testAddProductTypeValidationAmount3() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationAmountMin() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), -1, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
     }
     @Test
-    public void testAddProductTypeValidationAmount4() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testAddProductTypeValidationAmountMax() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 101, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải nhỏ hơn hoặc bằng 100."));
+    }
+    @Test
+    public void testAddProductTypeValidationAmountMinSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 1, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testAddProductTypeValidationAmountMaxSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 100, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
     public void testEditProductTypeValidationName() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        ProductType productType = new ProductType( "123", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testEditProductTypeValidationName1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationNameSpecialCharacters() throws Exception {
+        ProductType productType = new ProductType( "@Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ten')].defaultMessage").value("Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng."));
+    }
+    @Test
+    public void testEditProductTypeValidationNameSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
     public void testEditProductTypeValidationNCC() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        ProductType productType = new ProductType( "Đầm", "123", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testEditProductTypeValidationNCC1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationNCCSpecialCharacters() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "@Quảng", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'ncc')].defaultMessage").value("Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng."));
     }
     @Test
-    public void testEditProductTypeValidationAmount() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationNCCSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testEditProductTypeValidationAmount1() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationAmountSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 5, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testEditProductTypeValidationAmount3() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationAmountMin() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), -1, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải lớn hơn hoặc bằng 1."));
     }
     @Test
-    public void testEditProductTypeValidationAmount4() throws Exception {
-        ProductType productType = new ProductType( "", "", null, 0, "");
-        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.internalServerError().build());
-        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+    public void testEditProductTypeValidationAmountMax() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 101, "Kệ số 1 - Hàng số 3");
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateProductType")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productType)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'soluong')].defaultMessage").value("Số lượng loại mặt hàng phải nhỏ hơn hoặc bằng 100."));
+    }
+    @Test
+    public void testEditProductTypeValidationAmountMinSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 1, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+    @Test
+    public void testEditProductTypeValidationAmountMaxSuccess() throws Exception {
+        ProductType productType = new ProductType( "Đầm", "Quảng Châu", Date.valueOf("2024-04-26"), 100, "Kệ số 1 - Hàng số 3");
+        BindingResult bindingResult = Mockito.mock(BindingResult.class);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(productTypeDAO.insertProductType(productType)).thenReturn(ResponseEntity.ok().body(productType));
+        ResponseEntity<?> responseEntity = productTypeController.postProductType(productType, bindingResult);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }

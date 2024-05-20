@@ -32,13 +32,13 @@ export const ProductType = () => {
   const newvalidate = {};
   if (productType.ten === '' || !productType.ten) {
   newvalidate.ten = "Tên loại mặt hàng không được để trống.";
-  } else if (!/^[a-zA-Z\s]+$/.test(productType.ten)) {
+  } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ten)) {
     newvalidate.ten = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.";
   }
   
   if (productType.ncc === '' || !productType.ncc) {
     newvalidate.ncc = "Tên nhà cung cấp không được để trống.";
-  } else if (!/^[a-zA-Z\s]+$/.test(productType.ncc)) {
+  } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ncc)) {
     newvalidate.ncc = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
   }
     
@@ -48,7 +48,7 @@ export const ProductType = () => {
 
   if (productType.soluong === '' || !productType.soluong) {
     newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
-  } else if (isNaN(productType.soluong) || productType.soluong <= 1 || productType.soluong => 100) {
+  } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100) {
     newvalidate.soluong = "Số lượng loại mặt hàng phải nằm trong khoảng từ 1 đến 100.";
   }
   setValidation(newvalidate);

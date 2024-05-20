@@ -1,6 +1,8 @@
 package com.example.ManageStore.Controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +32,18 @@ public class ProductTypeController {
 	}
 	
 	@PostMapping("/addProductType")
-	public ResponseEntity<?> postProductType(@RequestBody ProductType productType){
+	public ResponseEntity<?> postProductType(@Valid @RequestBody ProductType productType, BindingResult result){
+		if (result.hasErrors()){
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
 		return dao.insertProductType(productType);
 	}
 	
 	@PutMapping("/updateProductType")
-	public ResponseEntity<?> putProductType (@RequestBody ProductType productType){
+	public ResponseEntity<?> putProductType (@Valid @RequestBody ProductType productType, BindingResult result){
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body(result.getAllErrors());
+		}
 		return dao.updateProductTyppe(productType);
 	}
 	
