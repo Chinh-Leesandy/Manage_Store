@@ -49,8 +49,8 @@ export const Employee = () => {
       }
       if (employee.password === '' || !employee.password) {
           newvalidate.password = "Mật khẩu nhân viên không được để trống.";
-      } else if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/.test(employee.password){
-          newvalidate.password = "Mật khẩu phải có ít nhất 8 ký tự, phải có chữ viết hoa, chữ thường, chữ số và ký tự đặc biệt.";
+      } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/.test(employee.password)) {
+          newvalidate.password = "Mật khẩu có ít nhất 8 kí tự, phải có chữ viết hoa, chữ thường, chữ số và kí tự đặc biệt";
       }
       setValidation(newvalidate);
       return Object.keys(newvalidate).length === 0;
