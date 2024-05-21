@@ -23,12 +23,12 @@ export const HomeProductType = () => {
     const navigate = useNavigate();
 
     const handleView = (id) => {
-        navigate(`/productType/${id}` , { state: { productTypes } });
+        navigate(`/productType/${id}`);
     };
 
     const handleAdd = () => {
         if (window.confirm("Bạn có chắc chắn muốn tạo loại sản phẩm mới không?")) {
-            navigate("/productType/-1"  , { state: { productTypes } });
+            navigate("/productType/-1" );
         }
     };
 

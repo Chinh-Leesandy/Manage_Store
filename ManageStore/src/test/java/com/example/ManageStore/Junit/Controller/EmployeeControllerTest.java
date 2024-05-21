@@ -74,77 +74,6 @@ public class EmployeeControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
-    public void testAddEmployeeErrorSDT () throws Exception{
-        Employee invalidEmployee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidEmployee)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    public void testAddEmployeeErrorName () throws Exception{
-        Employee invalidEmployee = new Employee("", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidEmployee)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-    @Test
-    public void testAddEmployeeErrorEmail () throws Exception{
-        Employee invalidEmployee = new Employee("Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidEmployee)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-    // Viết tiếp cho các trường hợp trống trường tiếp theo
-//    @Test
-//    public void testAddEmployeeErrorDiaChi () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeErrorChucVu () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeErrorUsername () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeErrorPassword () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-    @Test
-    public void testAddEmployeeError () throws Exception{
-        Employee employee = new Employee("", "","", "", "", "", "", null);
-        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(employee)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-    @Test
-    public void testAddEmployeeErrorTime () throws Exception{
-        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", null);
-        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(employee)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-    // Chinh edit như phần add
-    @Test
     public void testPutEmployee() throws Exception{
         Employee employee = new Employee(3, "Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-15"));
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
@@ -159,388 +88,228 @@ public class EmployeeControllerTest {
         ResponseEntity<?> responseEntity = controller.deleteEmployee("3");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
-//    @Test
-//    public void testEditEmployeeErrorSDT () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//
-//    @Test
-//    public void testEditEmployeeErrorName () throws Exception{
-//        Employee employee = new Employee(3,"", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorEmail () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorDiaChi () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorChucVu () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorUsername () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorPassword () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeError () throws Exception{
-//        Employee employee = new Employee(3,"", "","", "", "", "", "", null);
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeErrorTime () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", null);
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
     @Test
-    public void testAddEmployeeValidationSDT1 () throws Exception{
-        Employee employee = new Employee("Nguyễn Quang", "0123456","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+    public void testAddEmployeeEmptyAll () throws Exception{
+        Employee employee = new Employee("", "","", "", "", "", "", null);
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptyName () throws Exception{
+        Employee invalidEmployee = new Employee("", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidEmployee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptySDT () throws Exception{
+        Employee invalidEmployee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidEmployee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptyEmail () throws Exception{
+        Employee invalidEmployee = new Employee("Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidEmployee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptyDiaChi () throws Exception{
+        Employee invalidEmployee = new Employee("Nguyễn Quang", "0948266581","Quangnp@gmail.com", "", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidEmployee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testAddEmployeeEmptyChucVu () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptyUsername () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeEmptyPassword () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeErrorTime () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", null);
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    public void testAddEmployeeValidateNameNumber () throws Exception{
+        Employee employee = new Employee("123", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
         mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].defaultMessage").value("Số điện thoại không hợp lệ."));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'hoten')].defaultMessage").value("Tên nhân viên chỉ được chứa chữ cái và khoảng trắng."));
     }
-    //tương tự cho các cái sau.
-//
-//    @Test
-//    public void testAddEmployeeValidationSDT2 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationSDT3 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationSDT4 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationEmail () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationChucVu () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationName () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword1 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword2 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword3 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }@Test
-//    public void testAddEmployeeValidationPassword4 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword5 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword6 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword7 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword8 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword9 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword10 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword11 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword12 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword13 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testAddEmployeeValidationPassword14 () throws Exception{
-//        Employee employee = new Employee("Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.insertEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.postEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationSDT1 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationSDT2 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationSDT3 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationSDT4 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//
-//    @Test
-//    public void testEditEmployeeValidationName () throws Exception{
-//        Employee employee = new Employee(3,"", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationEmail () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationChucVu () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "0948266581","quang@gmail.com", "Thanh Trì - Hà Nội", "", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword1 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword2 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword3 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword4 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword5 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword6 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword7 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword8 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword9 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword10 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword11 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword15 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword12 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword13 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
-//    @Test
-//    public void testEditEmployeeValidationPassword14 () throws Exception{
-//        Employee employee = new Employee(3,"Nguyễn Quang", "","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "", Date.valueOf("2024-05-01"));
-//        when(employeeDAO.updateEmployee(employee)).thenReturn(ResponseEntity.internalServerError().build());
-//        ResponseEntity<?> responseEntity = controller.putEmployee(employee);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
+    @Test
+    public void testAddEmployeeValidateNameNumberChar () throws Exception{
+        Employee employee = new Employee("abc123", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'hoten')].defaultMessage").value("Tên nhân viên chỉ được chứa chữ cái và khoảng trắng."));
+    }
+    @Test
+    public void testAddEmployeeValidateNameSpecialCharacters () throws Exception{
+        Employee employee = new Employee("@abc", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'hoten')].defaultMessage").value("Tên nhân viên chỉ được chứa chữ cái và khoảng trắng."));
+    }
+
+    @Test
+    public void testAddEmployeeValidateSDTChar () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "abc","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTCharNumber () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "abc1234567","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTSpecialCharacters () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "@123456789","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTLenghtLessThan10 () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "123456789","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTLenghtMoreThan10 () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "12345678910","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTLenghtEquals10 () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "1234567891","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTWrongFormat () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123 456 789","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateSDTNotStart0 () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "1234567899","quang@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'sdt')].defaultMessage").value("Số điện thoại không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateEmailWrongFormat () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123456789","quanggmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'email')].defaultMessage").value("Email không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateChuVuNumber () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "123", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'chucvu')].defaultMessage").value("Chức vụ chỉ được chứa chữ cái và khoảng trắng."));
+    }
+    @Test
+    public void testAddEmployeeValidateChuVuNumberChar () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "123abc", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'chucvu')].defaultMessage").value("Chức vụ chỉ được chứa chữ cái và khoảng trắng."));
+    }
+    @Test
+    public void testAddEmployeeValidateChuVuSpecialCharacters () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "@abc", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'chucvu')].defaultMessage").value("Chức vụ chỉ được chứa chữ cái và khoảng trắng."));
+    }
 }

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import EmployeeService from '../../service/EmployeeService';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { errorToast, successToast } from '../../util/toastily';
 export const Employee = () => {
     const [employee, setEmployee] = useState({});
+    const [employees, setEmployees] = useState([]);
     const params = useParams();
     const id = params.id;
     const navigate = useNavigate();
     const [validation, setValidation] = useState({});
-    const location = useLocation();
-    const employees = location.state.employees;
     useEffect(() => {
         loadEmployee(id);
+        loadEmployees();
     }, [id]);
     const loadEmployee = async (id) => {
         try {
@@ -21,6 +21,14 @@ export const Employee = () => {
             console.error('Error loading employee:', error.message);
         }
     };
+    const loadEmployees = async () => {
+      try {
+          const employeeList = await EmployeeService.getEmployees();
+          setEmployees(employeeList);
+      } catch (error) {
+          console.error('Error loading employees:', error.message);
+      }
+    }; 
     const validateForm = () => {
       const newvalidate = {};
   

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation} from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import ProductTypeService from '../../service/ProductTypeService';
 import { errorToast, successToast } from '../../util/toastily';
 
@@ -15,12 +15,12 @@ export const ProductType = () => {
   const params = useParams();
   const id = params.id;
   const navigate = useNavigate();
-  const location = useLocation();
-  const productTypes = location.state.productTypes;
+  const [productTypes, setProductTypes] = useState([]);
 
   useEffect(() => {
     if (id >= 0) {
       loadProductType(id);
+      loadProductTypes();
     }
   }, [id]);
 
@@ -32,7 +32,14 @@ export const ProductType = () => {
       console.error('Error loading productType:', error.message);
     }
   };
-
+  const loadProductTypes = async () => {
+    try {
+        const data = await ProductTypeService.getProductType();
+        setProductTypes(data);
+    } catch (error) {
+        console.error('Error loading productType:', error.message);
+    }
+  };
   const validateForm = () => {
     const newValidate = {};
     if (productType.ten === '' || !productType.ten) {

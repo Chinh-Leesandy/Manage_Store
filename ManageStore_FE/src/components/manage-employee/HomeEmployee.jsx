@@ -30,11 +30,11 @@ export const HomeEmployee = () => {
 
     const navigate = useNavigate();
     const handleView = (id) => {
-        navigate(`/employee/${id}`, { state: { employees } })
+        navigate(`/employee/${id}`)
     }
     const handleAdd = () => {
         if (window.confirm("Bạn có chắc chắn muốn tạo nhân viên mới không?")) {
-          navigate("/employee/-1",  { state: { employees } });
+          navigate("/employee/-1");
         }
       };
 

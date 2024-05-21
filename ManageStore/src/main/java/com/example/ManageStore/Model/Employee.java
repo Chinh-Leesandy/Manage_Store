@@ -10,7 +10,7 @@ public class Employee {
 	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.")
 	private String hoten;
 	@NotBlank(message = "Số điện thoại không được để trống.")
-	@Pattern(regexp = "^\\+?(\\d{3})\\)?[-. ]?(\\d{3})[-. ]?(\\d{4})$", message = "Số điện thoại không hợp lệ.")
+	@Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ.")
 	private String sdt;
 	@NotBlank(message = "Email nhân viên không được để trống.")
 	@Pattern(regexp = ".+@.+", message = "Email không hợp lệ.")
@@ -23,11 +23,10 @@ public class Employee {
 	@NotBlank(message = "Tài khoản đăng nhập nhân viên không được để trống.")
 	private String username;
 	@NotBlank(message = "Mật khẩu nhân viên không được để trống.")
-	@Size(min = 8, message = "Mật khẩu phải có ít nhất 8 ký tự.")
-	@Pattern(regexp = ".*[a-z].*", message = "Mật khẩu phải chứa ít nhất một chữ viết thường.")
-	@Pattern(regexp = ".*[A-Z].*", message = "Mật khẩu phải chứa ít nhất một chữ viết hoa.")
-	@Pattern(regexp = ".*\\d.*", message = "Mật khẩu phải chứa ít nhất một số.")
-	@Pattern(regexp = ".*\\W.*", message = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.")
+	@Pattern(
+			regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W).{8,}$",
+			message = "Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất một chữ viết thường, một chữ viết hoa, một chữ số và một ký tự đặc biệt."
+	)
 	private String password;
 	@NotNull(message = "Ngày bắt đầu làm việc không được để trống.")
 	private Date ngaybatdaulam;
