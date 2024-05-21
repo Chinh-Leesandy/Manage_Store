@@ -13,7 +13,7 @@ public class Employee {
 	@Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ.")
 	private String sdt;
 	@NotBlank(message = "Email nhân viên không được để trống.")
-	@Pattern(regexp = ".+@.+", message = "Email không hợp lệ.")
+	@Pattern(regexp = "^[a-zA-Z0-9]+@gmail\\.com$", message = "Email không hợp lệ.")
 	private String email;
 	@NotBlank(message = "Địa chỉ nhân viên không được để trống.")
 	private String diachi;
@@ -21,6 +21,7 @@ public class Employee {
 	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Chức vụ chỉ được chứa chữ cái và khoảng trắng.")
 	private String chucvu;
 	@NotBlank(message = "Tài khoản đăng nhập nhân viên không được để trống.")
+	@Pattern(regexp = "^\\S*$\n", message = "Tài khoản đăng nhập không được chứa khoảng trắng.")
 	private String username;
 	@NotBlank(message = "Mật khẩu nhân viên không được để trống.")
 	@Pattern(

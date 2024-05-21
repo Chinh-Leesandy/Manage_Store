@@ -756,4 +756,66 @@ public class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'password')].defaultMessage").value("Mật khẩu phải có ít nhất 8 ký tự, chứa ít nhất một chữ viết thường, một chữ viết hoa, một chữ số và một ký tự đặc biệt."));
     }
+    @Test
+    public void testEditEmployeeValidateUsernameSpaceCharacters () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Nhân viên bán hàng", "Quan g", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'username')].defaultMessage").value("Tài khoản đăng nhập không được chứa khoảng trắng."));
+    }
+    @Test
+    public void testEditEmployeeValidateEmailSpecialCharacter () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123456789","quang!!@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'email')].defaultMessage").value("Email không hợp lệ."));
+    }
+
+    @Test
+    public void testEditEmployeeValidateEmailSpaceCharacter () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123456789","qua n g@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'email')].defaultMessage").value("Email không hợp lệ."));
+    }
+    @Test
+    public void testAddEmployeeValidateUsernameSpaceCharacter () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0948256153","quang@gmail.com", "Thanh Trì - Hà Nội", "Nhân viên bán hàng", "Qu ang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'username')].defaultMessage").value("Tài khoản đăng nhập không được chứa khoảng trắng."));
+    }
+    @Test
+    public void testAddEmployeeValidateEmailWrongFormatSpecialCharacter () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123456789","quang!!@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'email')].defaultMessage").value("Email không hợp lệ."));
+    }
+
+    @Test
+    public void testAddEmployeeValidateEmailWrongFormatSpaceCharacter () throws Exception{
+        Employee employee = new Employee("Nguyễn Quang", "0123456789","qua n g@gmail.com", "Thanh Trì - Hà Nội", "Quản lý loại hàng", "Quang", "Quang@256", Date.valueOf("2024-05-01"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(employee)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.field == 'email')].defaultMessage").value("Email không hợp lệ."));
+    }
 }

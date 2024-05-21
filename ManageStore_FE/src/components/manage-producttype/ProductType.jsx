@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ProductTypeService from '../../service/ProductTypeService';
 import { errorToast, successToast } from '../../util/toastily';
 
@@ -20,8 +20,8 @@ export const ProductType = () => {
   useEffect(() => {
     if (id >= 0) {
       loadProductType(id);
-      loadProductTypes();
     }
+    loadProductTypes();
   }, [id]);
 
   const loadProductType = async (id) => {
@@ -32,14 +32,16 @@ export const ProductType = () => {
       console.error('Error loading productType:', error.message);
     }
   };
+
   const loadProductTypes = async () => {
     try {
-        const data = await ProductTypeService.getProductType();
-        setProductTypes(data);
+      const data = await ProductTypeService.getProductType();
+      setProductTypes(data);
     } catch (error) {
-        console.error('Error loading productType:', error.message);
+      console.error('Error loading productTypes:', error.message);
     }
   };
+
   const validateForm = () => {
     const newValidate = {};
     if (productType.ten === '' || !productType.ten) {
@@ -70,40 +72,37 @@ export const ProductType = () => {
   const handleAddOrUpdate = async () => {
     if (validateForm()) {
       try {
-        const existingProductType = productTypes.find(pt => pt.ten === productType.ten && pt.thoigiannhap === productType.thoigiannhap);
-        if (existingProductType) {
-          const updatedProductType = {
-            ...existingProductType,
-            soluong: parseInt(existingProductType.soluong) + parseInt(productType.soluong)
-          };
-          await ProductTypeService.updateProductType(updatedProductType);
-          successToast("Bạn đã cập nhập thành công số lượng loại mặt hàng");
-        } else {
-          if (id < 0) {
+        if (id < 0) {
+          // Check if product type already exists
+          const existingProductType = productTypes.find(
+            pt => pt.ten === productType.ten && pt.ncc === productType.ncc && pt.thoigiannhap === productType.thoigiannhap
+          );
+          if (existingProductType) {
+            // Update the existing product type's quantity
+            const updatedProductType = {
+              ...existingProductType,
+              soluong: parseInt(existingProductType.soluong) + parseInt(productType.soluong)
+            };
+            await ProductTypeService.updateProductType(updatedProductType);
+            successToast("Số lượng loại mặt hàng đã được cập nhật");
+          } else {
+            // Add new product type
             await ProductTypeService.addProductType(productType);
             successToast("Bạn đã thêm thành công loại mặt hàng");
-          } else {
-            await ProductTypeService.updateProductType(productType);
-            successToast("Bạn đã cập nhập thành công loại mặt hàng");
           }
+        } else {
+          await ProductTypeService.updateProductType(productType);
+          successToast("Bạn đã cập nhật thành công loại mặt hàng");
         }
         setTimeout(() => {
           navigate('/productType');
         }, 1000);
       } catch (error) {
         console.error('Error:', error.message);
-        if (id < 0) {
-          errorToast("Bạn thêm không thành công loại mặt hàng");
-        } else {
-          errorToast("Bạn cập nhập không thành công loại mặt hàng");
-        }
+        errorToast(id < 0 ? "Bạn thêm không thành công loại mặt hàng" : "Bạn cập nhật không thành công loại mặt hàng");
       }
     } else {
-      if (id < 0) {
-        errorToast("Bạn thêm không thành công loại mặt hàng");
-      } else {
-        errorToast("Bạn cập nhập không thành công loại mặt hàng");
-      }
+      errorToast(id < 0 ? "Bạn thêm không thành công loại mặt hàng" : "Bạn cập nhật không thành công loại mặt hàng");
     }
   };
 
@@ -122,7 +121,7 @@ export const ProductType = () => {
       {id < 0 ? (
         <h2 className='fs-2 text-center'>Thêm loại mặt hàng mới</h2>
       ) : (
-        <h2 className='fs-2 text-center'>Cập nhập thông tin loại mặt hàng</h2>
+        <h2 className='fs-2 text-center'>Cập nhật thông tin loại mặt hàng</h2>
       )}
       <div className="row g-3 col-7 mx-auto p-3">
         <div className="col-md-6">

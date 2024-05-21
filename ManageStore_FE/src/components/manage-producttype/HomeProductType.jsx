@@ -6,6 +6,7 @@ import { errorToast, successToast } from '../../util/toastily';
 export const HomeProductType = () => {
     const [productTypes, setProductTypes] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         loadProductTypes();
@@ -17,6 +18,8 @@ export const HomeProductType = () => {
             setProductTypes(data);
         } catch (error) {
             console.error('Error loading productType:', error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -27,10 +30,10 @@ export const HomeProductType = () => {
     };
 
     const handleAdd = () => {
-        navigate("/productType/-1" );
+        navigate("/productType/-1");
     };
 
-    const handleDelete = async(e) => {
+    const handleDelete = async (e) => {
         if (window.confirm(`Bạn có chắc chắn muốn xóa loại mặt hàng ${e.ten} không?`)) {
             try {
                 await ProductTypeService.deleteProductType(e.id);
@@ -53,6 +56,16 @@ export const HomeProductType = () => {
     const filteredProductTypes = productTypes.filter(productType => {
         return productType.ten.toLowerCase().includes(searchKeyword.toLowerCase());
     });
+
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center" style={{marginTop: '50vh'}}>
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className='container'>

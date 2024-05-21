@@ -7,6 +7,7 @@ export const HomeEmployee = () => {
     const [employees, setEmployees] = useState([]);
     const [showPasswords, setShowPasswords] = useState({});
     const [searchKeyword, setSearchKeyword] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         loadEmployees();
@@ -18,6 +19,8 @@ export const HomeEmployee = () => {
             setEmployees(employeeList);
         } catch (error) {
             console.error('Error loading employees:', error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -33,31 +36,43 @@ export const HomeEmployee = () => {
         navigate(`/employee/${id}`)
     }
     const handleAdd = () => {
-          navigate("/employee/-1");
-      };
+        navigate("/employee/-1");
+    };
 
-      const handleDelete = async(e) => {
+    const handleDelete = async(e) => {
         if (window.confirm(`Bạn có chắc chắn muốn xóa nhân viên ${e.hoten} không?`)) {
             try {
-               await EmployeeService.deleteEmployee(e.id);
-               successToast("Bạn đã xóa thành công nhân viên")
-               setTimeout(() => {
-                   navigate('/employee'); 
-               }, 1000);
-               window.location.reload();
+                await EmployeeService.deleteEmployee(e.id);
+                successToast("Bạn đã xóa thành công nhân viên")
+                setTimeout(() => {
+                    navigate('/employee'); 
+                }, 1000);
+                window.location.reload();
             } catch (error) {
                 console.error('Error delete employee:', error.message);
                 errorToast("Bạn xóa không thành công nhân viên")
             }
         }
-      };
-      const handleSearchChange = (e) => {
+    };
+
+    const handleSearchChange = (e) => {
         setSearchKeyword(e.target.value);
     };
 
     const filteredEmployees = employees.filter(employee => {
         return employee.hoten.toLowerCase().includes(searchKeyword.toLowerCase());
     });
+
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center" style={{marginTop: '50vh'}}>
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className='container'>
             <h2 className='fs-2 text-center'>Quản lý nhân viên</h2>
@@ -106,7 +121,7 @@ export const HomeEmployee = () => {
                                         className=" btn btn-primary btn-sm"
                                         onClick={() => togglePasswordVisibility(employee.id)}
                                     >
-                                    Show
+                                        Show
                                     </button>
                                     {showPasswords[employee.id] && (
                                         <div className="mt-2">

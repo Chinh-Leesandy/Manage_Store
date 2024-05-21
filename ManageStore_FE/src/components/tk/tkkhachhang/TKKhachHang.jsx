@@ -3,7 +3,8 @@ import { TKService } from '../../../service/TKService';
 import { useNavigate } from "react-router-dom";
 export const TKKhachHang = () => {
   const [tkCutomer, setTkCustomer] = useState([]);
-  
+  const [isLoading, setIsLoading] = useState(true); 
+
   useEffect(() => {
     loadTkCutomer();
   }, []);
@@ -14,6 +15,8 @@ export const TKKhachHang = () => {
       setTkCustomer(data);
     } catch (error) {
       console.error("Load fail data tk by month")
+    } finally {
+      setIsLoading(false); 
     }
   }
   console.log(tkCutomer);
@@ -28,6 +31,15 @@ export const TKKhachHang = () => {
   const navigate = useNavigate();
   const handleView = (invoices) => {
     navigate('/tklisthd', { state: { invoices } })
+  }
+  if (isLoading) {
+    return (
+      <div className="container text-center" style={{marginTop: '50vh'}}>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
   return (
     <div className='container'>
