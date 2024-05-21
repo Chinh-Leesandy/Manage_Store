@@ -91,7 +91,7 @@ public class ProductTypeControllerTest {
     }
     @Test
     public void testGetProductTypeId() throws Exception {
-        ProductType productType = new ProductType(1, "Bìa hồ sơ", "Stationery Inc", Date.valueOf("2024-04-02"), 3, "Kệ số 2, Hàng số 3");
+        ProductType productType = new ProductType(1, "Đầm", "Quảng Châu", Date.valueOf("2024-04-02"), 3, "Kệ số 2, Hàng số 3");
         when(productTypeDAO.selectProductType(1)).thenReturn(ResponseEntity.ok().body(productType));
         ResponseEntity<?> responseEntity = productTypeController.getProductTypeId("1");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
