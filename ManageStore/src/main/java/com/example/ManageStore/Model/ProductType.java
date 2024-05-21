@@ -7,10 +7,10 @@ import java.sql.Date;
 public class ProductType {
 	private int id;
 	@NotBlank (message = "Tên loại mặt hàng không được để trống.")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.")
+	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.")
 	private String ten;
 	@NotBlank(message = "Tên nhà cung cấp không được để trống.")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.")
+	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.")
 	private String ncc;
 	@NotNull(message = "Thời gian nhập không được để trống.")
 	private Date thoigiannhap;

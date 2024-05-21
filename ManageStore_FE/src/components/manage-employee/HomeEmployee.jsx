@@ -33,9 +33,7 @@ export const HomeEmployee = () => {
         navigate(`/employee/${id}`)
     }
     const handleAdd = () => {
-        if (window.confirm("Bạn có chắc chắn muốn tạo nhân viên mới không?")) {
           navigate("/employee/-1");
-        }
       };
 
       const handleDelete = async(e) => {

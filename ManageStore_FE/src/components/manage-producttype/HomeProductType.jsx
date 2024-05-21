@@ -27,19 +27,18 @@ export const HomeProductType = () => {
     };
 
     const handleAdd = () => {
-        if (window.confirm("Bạn có chắc chắn muốn tạo loại sản phẩm mới không?")) {
-            navigate("/productType/-1" );
-        }
+        navigate("/productType/-1" );
     };
 
     const handleDelete = async(e) => {
-        if (window.confirm(`Bạn có chắc chắn muốn xóa nhân viên ${e.ten} không?`)) {
+        if (window.confirm(`Bạn có chắc chắn muốn xóa loại mặt hàng ${e.ten} không?`)) {
             try {
                 await ProductTypeService.deleteProductType(e.id);
                 successToast("Bạn đã xóa thành công loại mặt hàng");
                 setTimeout(() => {
                     navigate('/productType'); 
                 }, 1000);
+                window.location.reload();
             } catch (error) {
                 console.error('Error delete productType:', error.message);
                 errorToast("Bạn đã xóa không thành công loại mặt hàng");

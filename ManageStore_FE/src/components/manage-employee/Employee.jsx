@@ -39,9 +39,9 @@ export const Employee = () => {
       }
       if (employee.sdt === '' || !employee.sdt) {
           newvalidate.sdt = "Số điện thoại không được để trống.";
-      } else if (!/^\+?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(employee.sdt)) {
-          newvalidate.sdt = "Số điện thoại không hợp lệ.";
-      } else if (employees.some(e => e.sdt === employee.sdt && e.id !== id)) {
+      } else if (!/^0\d{9}$/.test(employee.sdt)) {
+          newvalidate.sdt = "Số điện thoại có 10 chữ số và bắt đầu bằng số 0";
+      } else if (id < 0 && employees.some(e => e.sdt === employee.sdt && e.id !== id)) {
         newvalidate.sdt = "Số điện thoại đã tồn tại.";
       }
       if (employee.ngaybatdaulam === '' || !employee.ngaybatdaulam) {
@@ -49,9 +49,11 @@ export const Employee = () => {
       }
       if (employee.email === '' || !employee.email) {
           newvalidate.email = "Email nhân viên không được để trống.";
-      } else if (!/^[^\s@]+@gmail\.com$/.test(employee.email)) {
-          newvalidate.email = "Email phải kết thúc bằng '@gmail.com'.";
-      } else if (employees.some(e => e.email === employee.email && e.id !== id)) {
+      } else if (!/^[a-zA-Z0-9]+@gmail\.com$/.test(employee.email)) {
+        newvalidate.email = "Email phải kết thúc bằng '@gmail.com' và chỉ chứa chữ cái và số.";
+      } else if (/\s/.test(employee.email)) {  
+        newvalidate.email = "Email không được chứa khoảng trắng.";
+      } else if (id < 0 && employees.some(e => e.email === employee.email && e.id !== id)) {
         newvalidate.email = "Email đã tồn tại.";
       }
       if (employee.diachi === '' || !employee.diachi) {
@@ -63,8 +65,10 @@ export const Employee = () => {
         newvalidate.chucvu = "Chức vụ nhân viên chỉ được chứa chữ cái và khoảng trắng.";
       }
       if (employee.username === '' || !employee.username) {
-          newvalidate.username = "Tài khoản đăng nhập nhân viên không được để trống.";
-      } else if (employees.some(e => e.username === employee.username && e.id !== id)) {
+        newvalidate.username = "Tài khoản đăng nhập nhân viên không được để trống.";
+      } else if (/\s/.test(employee.username)) {  
+        newvalidate.username = "Tài khoản đăng nhập không được chứa khoảng trắng.";
+      } else if (id < 0 && employees.some(e => e.username === employee.username && e.id !== id)) {
         newvalidate.username = "Tài khoản đăng nhập đã tồn tại.";
       }
       if (employee.password === '' || !employee.password) {
@@ -80,6 +84,7 @@ export const Employee = () => {
       if(validateForm()){
         try {
           if (id < 0) {
+            console.log(employee)
             await EmployeeService.addEmployee(employee);
             successToast("Thêm nhân viên thành công");
           } else {
@@ -108,7 +113,7 @@ export const Employee = () => {
       }
     }
     const handleBack = () => {
-      if(window.confirm(`Bạn có chắc chắn muốn xóa hủy không?`)){
+      if(window.confirm(`Bạn có chắc muốn hủy không?`)){
         try {
           navigate('/employee'); 
        } catch (error) {
@@ -161,7 +166,7 @@ export const Employee = () => {
           </div>
           <div className="col-12">
             <label htmlFor="ngaybatdaulv" className="form-label">Ngày bắt đầu làm việc:<span style={{ color: 'red', marginLeft: '5px' }}>*</span> </label>
-            <input type="date" className={validation.ngaybatdaulv ? 'form-control is-invalid' : 'form-control'} id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
+            <input type="date" className={validation.ngaybatdaulam ? 'form-control is-invalid' : 'form-control'} id="ngaybatdaulv" name="ngaybatdaulv" value={employee.ngaybatdaulam} onChange={(e) => setEmployee({...employee, ngaybatdaulam: e.target.value})} required />
             {validation.ngaybatdaulam && <div className="invalid-feedback validation-date">{validation.ngaybatdaulam}</div>}
           </div>
         </div>

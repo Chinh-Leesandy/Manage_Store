@@ -37,6 +37,9 @@ public class EmployeeController {
 	@PostMapping("/addEmployee")
 	public ResponseEntity<?> postEmployee (@Valid @RequestBody Employee employee, BindingResult result){
 		if(result.hasErrors()){
+			result.getAllErrors().forEach(error -> {
+				System.out.println(error.toString());
+			});
 			return ResponseEntity.badRequest().body(result.getAllErrors());
 		}
 		return employeeDAO.insertEmployee(employee);

@@ -7,7 +7,7 @@ import java.sql.Date;
 public class Employee {
 	private int id;
 	@NotBlank(message = "Tên nhân viên không được để trống.")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.")
+	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.")
 	private String hoten;
 	@NotBlank(message = "Số điện thoại không được để trống.")
 	@Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không hợp lệ.")
@@ -18,7 +18,7 @@ public class Employee {
 	@NotBlank(message = "Địa chỉ nhân viên không được để trống.")
 	private String diachi;
 	@NotBlank(message = "Chức vụ nhân viên không được để trống.")
-	@Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Chức vụ chỉ được chứa chữ cái và khoảng trắng.")
+	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Chức vụ chỉ được chứa chữ cái và khoảng trắng.")
 	private String chucvu;
 	@NotBlank(message = "Tài khoản đăng nhập nhân viên không được để trống.")
 	private String username;
