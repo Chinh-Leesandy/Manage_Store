@@ -28,7 +28,7 @@ export const HomeProductType = () => {
 
     const handleAdd = () => {
         if (window.confirm("Bạn có chắc chắn muốn tạo loại sản phẩm mới không?")) {
-            navigate("/productType/-1");
+            navigate("/productType/-1"  , { state: { productTypes } });
         }
     };
 
