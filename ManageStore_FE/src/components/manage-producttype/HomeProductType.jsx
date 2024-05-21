@@ -23,7 +23,7 @@ export const HomeProductType = () => {
     const navigate = useNavigate();
 
     const handleView = (id) => {
-        navigate(`/productType/${id}`);
+        navigate(`/productType/${id}` , { state: { productTypes } });
     };
 
     const handleAdd = () => {
@@ -59,9 +59,9 @@ export const HomeProductType = () => {
         <div className='container'>
             <h2 className='fs-2 text-center'>Quản lý loại mặt hàng</h2>
             <hr />
-            <div className="d-flex justify-content-between mb-2">
-                <button onClick={() => handleAdd()} className='btn btn-outline-success'>Thêm loại mặt hàng</button>
-                <div className="col-4">
+            <div className="d-flex flex-column flex-md-row justify-content-between mb-2">
+                <button onClick={() => handleAdd()} className='btn btn-outline-success mb-2 mb-md-0'>Thêm loại mặt hàng</button>
+                <div className="col-12 col-md-4">
                     <input
                         type="text"
                         className="form-control"
@@ -71,37 +71,39 @@ export const HomeProductType = () => {
                     />
                 </div>
             </div>
-            <table className="table table-striped rounded-2">
-                <thead>
-                    <tr className='text-center'>
-                        <td>ID</td>
-                        <td>Tên loại mặt hàng</td>
-                        <td>Nhà cung cấp</td>
-                        <td>Thời gian nhập</td>
-                        <td>Số lượng loại</td>
-                        <td>Vị trí trưng bày</td>
-                        <td>Action</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredProductTypes.map((productType) => (
-                        <tr key={productType.id} className='text-center'>
-                            <td>{productType.id}</td>
-                            <td>{productType.ten}</td>
-                            <td>{productType.ncc}</td>
-                            <td>{productType.thoigiannhap}</td>
-                            <td>{productType.soluong}</td>
-                            <td>{productType.vitri}</td>
-                            <td>
-                                <div className="d-flex justify-content-around">
-                                    <button onClick={() => handleView(productType.id)} className='btn btn-outline-warning'>Edit</button>
-                                    <button onClick={() => handleDelete(productType)} className='btn btn-outline-danger'>Delete</button>
-                                </div>
-                            </td>
+            <div className='table-responsive'>
+                <table className="table table-striped rounded-2">
+                    <thead>
+                        <tr className='text-center'>
+                            <td>ID</td>
+                            <td>Tên loại mặt hàng</td>
+                            <td>Nhà cung cấp</td>
+                            <td>Thời gian nhập</td>
+                            <td>Số lượng loại</td>
+                            <td>Vị trí trưng bày</td>
+                            <td>Action</td>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredProductTypes.map((productType) => (
+                            <tr key={productType.id} className='text-center'>
+                                <td>{productType.id}</td>
+                                <td>{productType.ten}</td>
+                                <td>{productType.ncc}</td>
+                                <td>{productType.thoigiannhap}</td>
+                                <td>{productType.soluong}</td>
+                                <td>{productType.vitri}</td>
+                                <td>
+                                    <div className="d-flex justify-content-around">
+                                        <button onClick={() => handleView(productType.id)} className='btn btn-outline-warning'>Edit</button>
+                                        <button onClick={() => handleDelete(productType)} className='btn btn-outline-danger'>Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

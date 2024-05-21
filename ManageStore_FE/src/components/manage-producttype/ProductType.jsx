@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation} from "react-router-dom";
 import ProductTypeService from '../../service/ProductTypeService';
 import { errorToast, successToast } from '../../util/toastily';
 
@@ -15,9 +15,13 @@ export const ProductType = () => {
   const params = useParams();
   const id = params.id;
   const navigate = useNavigate();
+  const location = useLocation();
+  const productTypes = location.state.productTypes;
 
   useEffect(() => {
-    loadProductType(id);
+    if (id >= 0) {
+      loadProductType(id);
+    }
   }, [id]);
 
   const loadProductType = async (id) => {
@@ -28,42 +32,53 @@ export const ProductType = () => {
       console.error('Error loading productType:', error.message);
     }
   };
-  const validateForm = () => {
-  const newvalidate = {};
-  if (productType.ten === '' || !productType.ten) {
-  newvalidate.ten = "Tên loại mặt hàng không được để trống.";
-  } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ten)) {
-    newvalidate.ten = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.";
-  }
-  
-  if (productType.ncc === '' || !productType.ncc) {
-    newvalidate.ncc = "Tên nhà cung cấp không được để trống.";
-  } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ncc)) {
-    newvalidate.ncc = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
-  }
-    
-  if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
-    newvalidate.thoigiannhap = "Thời gian nhập không được để trống.";
-  }
 
-  if (productType.soluong === '' || !productType.soluong) {
-    newvalidate.soluong = "Số lượng loại mặt hàng không được để trống.";
-  } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100 || productType.soluong.includes('.')) {
-    newvalidate.soluong = "Số lượng loại mặt hàng là số nguyên nằm trong khoảng từ 1 đến 100.";
-  }
-  setValidation(newvalidate);
-  return Object.keys(newvalidate).length === 0;
-};
+  const validateForm = () => {
+    const newValidate = {};
+    if (productType.ten === '' || !productType.ten) {
+      newValidate.ten = "Tên loại mặt hàng không được để trống.";
+    } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ten)) {
+      newValidate.ten = "Tên loại mặt hàng chỉ được chứa chữ cái và khoảng trắng.";
+    }
+
+    if (productType.ncc === '' || !productType.ncc) {
+      newValidate.ncc = "Tên nhà cung cấp không được để trống.";
+    } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(productType.ncc)) {
+      newValidate.ncc = "Tên nhà cung cấp chỉ được chứa chữ cái và khoảng trắng.";
+    }
+
+    if (productType.thoigiannhap === '' || !productType.thoigiannhap) {
+      newValidate.thoigiannhap = "Thời gian nhập không được để trống.";
+    }
+
+    if (productType.soluong === '' || !productType.soluong) {
+      newValidate.soluong = "Số lượng loại mặt hàng không được để trống.";
+    } else if (isNaN(productType.soluong) || productType.soluong < 1 || productType.soluong > 100 || productType.soluong.includes('.')) {
+      newValidate.soluong = "Số lượng loại mặt hàng là số nguyên nằm trong khoảng từ 1 đến 100.";
+    }
+    setValidation(newValidate);
+    return Object.keys(newValidate).length === 0;
+  };
 
   const handleAddOrUpdate = async () => {
     if (validateForm()) {
       try {
-        if (id < 0) {
-          await ProductTypeService.addProductType(productType);
-          successToast("Bạn đã thêm thành công loại mặt hàng");
+        const existingProductType = productTypes.find(pt => pt.ten === productType.ten && pt.thoigiannhap === productType.thoigiannhap);
+        if (existingProductType) {
+          const updatedProductType = {
+            ...existingProductType,
+            soluong: parseInt(existingProductType.soluong) + parseInt(productType.soluong)
+          };
+          await ProductTypeService.updateProductType(updatedProductType);
+          successToast("Bạn đã cập nhập thành công số lượng loại mặt hàng");
         } else {
-          await ProductTypeService.updateProductType(productType);
-          successToast("Bạn đã cập nhập thành công loại mặt hàng");
+          if (id < 0) {
+            await ProductTypeService.addProductType(productType);
+            successToast("Bạn đã thêm thành công loại mặt hàng");
+          } else {
+            await ProductTypeService.updateProductType(productType);
+            successToast("Bạn đã cập nhập thành công loại mặt hàng");
+          }
         }
         setTimeout(() => {
           navigate('/productType');
@@ -97,10 +112,10 @@ export const ProductType = () => {
 
   return (
     <div className='container'>
-      {id<0 ? (
-         <h2 className='fs-2 text-center'>Thêm loại mặt hàng mới</h2>
-      ):(
-          <h2 className='fs-2 text-center'>Cập nhập thông tin loại mặt hàng</h2>
+      {id < 0 ? (
+        <h2 className='fs-2 text-center'>Thêm loại mặt hàng mới</h2>
+      ) : (
+        <h2 className='fs-2 text-center'>Cập nhập thông tin loại mặt hàng</h2>
       )}
       <div className="row g-3 col-7 mx-auto p-3">
         <div className="col-md-6">
@@ -135,5 +150,5 @@ export const ProductType = () => {
         <button onClick={handleBack} className='btn btn-outline-warning px-5'>Cancel</button>
       </div>
     </div>
-  )
-}
+  );
+};

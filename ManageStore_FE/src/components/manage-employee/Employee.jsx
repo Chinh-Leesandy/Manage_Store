@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import EmployeeService from '../../service/EmployeeService';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { errorToast, successToast } from '../../util/toastily';
 export const Employee = () => {
     const [employee, setEmployee] = useState({});
@@ -8,6 +8,8 @@ export const Employee = () => {
     const id = params.id;
     const navigate = useNavigate();
     const [validation, setValidation] = useState({});
+    const location = useLocation();
+    const employees = location.state.employees;
     useEffect(() => {
         loadEmployee(id);
     }, [id]);
@@ -16,7 +18,7 @@ export const Employee = () => {
             const employee = await EmployeeService.getEmployeeById(id);
             setEmployee(employee);
         } catch (error) {
-            console.error('Error loading employees:', error.message);
+            console.error('Error loading employee:', error.message);
         }
     };
     const validateForm = () => {
@@ -24,11 +26,15 @@ export const Employee = () => {
   
       if (employee.hoten === '' || !employee.hoten) {
           newvalidate.hoten = "Tên nhân viên không được để trống.";
+      } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(employee.hoten)) {
+        newvalidate.hoten = "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.";
       }
       if (employee.sdt === '' || !employee.sdt) {
           newvalidate.sdt = "Số điện thoại không được để trống.";
       } else if (!/^\+?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(employee.sdt)) {
           newvalidate.sdt = "Số điện thoại không hợp lệ.";
+      } else if (employees.some(e => e.sdt === employee.sdt && e.id !== id)) {
+        newvalidate.sdt = "Số điện thoại đã tồn tại.";
       }
       if (employee.ngaybatdaulam === '' || !employee.ngaybatdaulam) {
           newvalidate.ngaybatdaulam = "Ngày bắt đầu làm việc không được để trống.";
@@ -37,15 +43,21 @@ export const Employee = () => {
           newvalidate.email = "Email nhân viên không được để trống.";
       } else if (!/^[^\s@]+@gmail\.com$/.test(employee.email)) {
           newvalidate.email = "Email phải kết thúc bằng '@gmail.com'.";
+      } else if (employees.some(e => e.email === employee.email && e.id !== id)) {
+        newvalidate.email = "Email đã tồn tại.";
       }
       if (employee.diachi === '' || !employee.diachi) {
           newvalidate.diachi = "Địa chỉ nhân viên không được để trống.";
       }
       if (employee.chucvu === '' || !employee.chucvu) {
           newvalidate.chucvu = "Chức vụ nhân viên không được để trống.";
+      } else if (!/^[a-zA-Z\sÀ-ỹ]+$/.test(employee.chucvu)) {
+        newvalidate.chucvu = "Chức vụ nhân viên chỉ được chứa chữ cái và khoảng trắng.";
       }
       if (employee.username === '' || !employee.username) {
           newvalidate.username = "Tài khoản đăng nhập nhân viên không được để trống.";
+      } else if (employees.some(e => e.username === employee.username && e.id !== id)) {
+        newvalidate.username = "Tài khoản đăng nhập đã tồn tại.";
       }
       if (employee.password === '' || !employee.password) {
           newvalidate.password = "Mật khẩu nhân viên không được để trống.";
