@@ -21,7 +21,7 @@ public class Employee {
 	@Pattern(regexp = "^[a-zA-Z\\sÀ-ỹ]+$", message = "Chức vụ chỉ được chứa chữ cái và khoảng trắng.")
 	private String chucvu;
 	@NotBlank(message = "Tài khoản đăng nhập nhân viên không được để trống.")
-	@Pattern(regexp = "^\\S*$\n", message = "Tài khoản đăng nhập không được chứa khoảng trắng.")
+	@Pattern(regexp = "^\\S*$", message = "Tài khoản đăng nhập không được chứa khoảng trắng.")
 	private String username;
 	@NotBlank(message = "Mật khẩu nhân viên không được để trống.")
 	@Pattern(

@@ -73,20 +73,17 @@ export const ProductType = () => {
     if (validateForm()) {
       try {
         if (id < 0) {
-          // Check if product type already exists
           const existingProductType = productTypes.find(
             pt => pt.ten === productType.ten && pt.ncc === productType.ncc && pt.thoigiannhap === productType.thoigiannhap
           );
           if (existingProductType) {
-            // Update the existing product type's quantity
             const updatedProductType = {
               ...existingProductType,
               soluong: parseInt(existingProductType.soluong) + parseInt(productType.soluong)
             };
             await ProductTypeService.updateProductType(updatedProductType);
-            successToast("Số lượng loại mặt hàng đã được cập nhật");
+            successToast("Bạn đã thêm thành công loại mặt hàng");
           } else {
-            // Add new product type
             await ProductTypeService.addProductType(productType);
             successToast("Bạn đã thêm thành công loại mặt hàng");
           }
